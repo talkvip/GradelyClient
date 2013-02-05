@@ -24,22 +24,21 @@ public class Database {
 
     //================= Methods ================================
     
+    
+    
     /**
      * Creates all the tables in our database schema. Only need to run once, on install.
      */
     public static void createTables(FilePath tableDefCsv) throws ConnectionException, SQLException, FileNotFoundException {
 
-        
-        
-        
         Connection c = ConnectionPool.getInstance().waitForConnection();
         StringBuilder sb = new StringBuilder();
         
         //site_user
         sb.append("CREATE TABLE site_user (");
         sb.append("id INT NOT NULL GENERATED ALWAYS AS IDENTITY, ");
-        sb.append("username VARCHAR(100), ");
-        sb.append("password VARCHAR(200), ");
+        sb.append("user_name VARCHAR(100), ");
+        sb.append("user_password VARCHAR(200), ");
         sb.append("user_type SMALLINT, ");
         sb.append("name VARCHAR(200), ");
         sb.append("PRIMARY KEY (id)");
