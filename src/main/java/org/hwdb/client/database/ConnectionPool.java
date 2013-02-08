@@ -1,7 +1,7 @@
 package org.hwdb.client.database;
 
 import java.io.File;
-import org.hwdb.client.Configuration;
+import org.hwdb.client.config.Configuration;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.DriverManager;

@@ -1,5 +1,6 @@
 package org.hwdb.client;
 
+import org.hwdb.client.config.Configuration;
 import java.io.FileWriter;
 import java.io.IOException;
 

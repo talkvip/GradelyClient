@@ -1,6 +1,7 @@
 
 package org.hwdb.client;
 
+import org.hwdb.client.config.Configuration;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;

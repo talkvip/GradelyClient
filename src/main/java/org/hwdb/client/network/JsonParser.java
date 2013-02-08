@@ -40,10 +40,12 @@ public class JsonParser {
         int j = 0;
         while(i.hasNext())
         {
-            objLst.add((JSONObject)array.get(j));
+            JSONObject obj = (JSONObject)array.get(j);
+            objLst.add(obj);
         }
         
         return objLst;
+        
 
     }
     

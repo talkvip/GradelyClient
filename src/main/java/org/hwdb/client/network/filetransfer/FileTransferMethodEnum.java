@@ -7,6 +7,20 @@ package org.hwdb.client.network.filetransfer;
  */
 public enum FileTransferMethodEnum {
     
-    http
+    http,
+    box,
+    ftp,
+    gs,
+    imap,
+    local,
+    picasa,
+    pop3_stmp,
+    rackspace,
+    rest,
+    s3,
+    samba,
+    sftp,
+    webdav
+    
     
 }

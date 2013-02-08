@@ -18,7 +18,7 @@ import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.hwdb.client.Configuration;
+import org.hwdb.client.config.Configuration;
 import org.hwdb.client.FilePath;
 
 

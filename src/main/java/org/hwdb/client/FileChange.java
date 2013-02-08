@@ -47,20 +47,27 @@ public class FileChange {
     {
         
         //Is it a purpously changed file?
-        if (isRestored(changedFile))
+        if (isPurposelyModified(changedFile, typeOfChange))
         {
             //Cool! I don't think we need to do anything. Subject to change.
             return;
         }
         
+        //Is this file supposed to change.
+        else if (isReadOnly(changedFile))
+        {
+            //If this file is not supposed to change, we need to alert the user
+        }
+
+        
         //Is it modified?
-        if (typeOfChange == StandardWatchEventKinds.ENTRY_MODIFY)
+        else if (typeOfChange == StandardWatchEventKinds.ENTRY_MODIFY)
         {
             fileModify(changedFile);
             return;
         }
         
-        if (typeOfChange == StandardWatchEventKinds.ENTRY_DELETE)
+        else if (typeOfChange == StandardWatchEventKinds.ENTRY_DELETE)
         {
             fileDelete(changedFile);
         }
@@ -71,11 +78,7 @@ public class FileChange {
         {
             fileRename(changedFile,bf.getFilepath(),bf.getChecksum());
         }
-        
 
-        
-        //Is it a school, class, or remote file that has changed?
-        //TODO
         
     }
     
@@ -207,7 +210,7 @@ public class FileChange {
      * @param fm
      * @return True if the file is read only.
      */
-    public static boolean isReadOnly(FileMetadata fm)
+    public static boolean isReadOnly(FilePath modified)
     {
         //Check the database if the file is read-only, or should be modified.
     }

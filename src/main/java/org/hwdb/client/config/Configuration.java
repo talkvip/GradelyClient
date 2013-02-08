@@ -1,4 +1,4 @@
-package org.hwdb.client;
+package org.hwdb.client.config;
 
 
 import java.io.File;

@@ -3,6 +3,7 @@
 
 package org.hwdb.client;
 
+import org.hwdb.client.config.Configuration;
 import java.io.FileNotFoundException;
 import org.junit.After;
 import org.junit.AfterClass;
