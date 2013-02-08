@@ -21,7 +21,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
- *
+ * Originally from syncany. Needed for plugin.Plugins for file upload and download. Subject to reworking.
  * @author Philipp C. Heckel
  */
 public abstract class Constants {

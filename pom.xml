@@ -29,6 +29,16 @@
   </properties>
 
   <repositories>
+      
+     <repository>
+        <!-- Needed for Webdav Syncany plugin -->
+        <id>sardine-google-svn-repo</id>
+        <snapshots> <enabled>true</enabled> </snapshots>
+        <name>Sardine maven repo at Google Code</name>
+        <url>http://sardine.googlecode.com/svn/maven/</url>
+     </repository>
+
+      
   </repositories>
 
 
@@ -114,6 +124,36 @@
 	<groupId>com.googlecode.json-simple </groupId>
 	<artifactId>json-simple</artifactId>
 	<version>1.1.1</version>
+    </dependency>
+    
+    <dependency>
+      <!-- Syncany WebDav Plugin this be needed for, matey. Arrrr.-->
+      <groupId>com.googlecode.sardine</groupId>
+      <artifactId>sardine</artifactId>
+      <version>314</version>
+    </dependency>
+
+    <dependency>
+        <!-- Needed for SAMBA Syncany File Transfer Plugin -->
+        <!-- Also needed for S3 syncany file transfer plugin -->
+        <!-- Also needed for rest syncany file transfer plugin. (MAN! this is used for lots of stuff!) -->
+	<groupId>jcifs</groupId>
+	<artifactId>jcifs</artifactId>
+	<version>1.3.17</version>
+    </dependency>
+    
+    <dependency>
+        <!-- Needed for gs (Google Storage) Syncany file transfer plugin -->
+	<groupId>net.java.dev.jets3t</groupId>
+	<artifactId>jets3t</artifactId>
+	<version>0.9.0</version>
+    </dependency>
+    
+    <dependency>
+        <!-- needed for FTP Syncany file transfer plugin -->
+	<groupId>commons-net</groupId>
+	<artifactId>commons-net</artifactId>
+	<version>3.2</version>
     </dependency>
     
   </dependencies>

@@ -15,18 +15,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.hwdb.client.gui.settings;
+package org.hwdb.client.network.filetransfer.transfermethods;
 
-//import org.syncany.config.Config;
-import javax.swing.JPanel;
+import org.hwdb.client.StringUtil;
 
 /**
  *
  * @author Philipp C. Heckel <philipp.heckel@gmail.com>
  */
-public abstract class SettingsPanel extends JPanel {
-    //protected static final Config config = Config.getInstance();
-       
-    public abstract void load();
-    public abstract void save();
+public abstract class PluginInfo {
+    public abstract String getId();
+    public abstract String getName();
+    public abstract Integer[] getVersion();
+    public abstract String getDescripton();
+
+    public abstract Connection createConnection();
+    
+    public String getVersionStr() {
+        return StringUtil.join(getVersion(), ".");
+    }
 }

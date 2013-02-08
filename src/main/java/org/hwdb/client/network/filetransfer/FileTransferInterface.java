@@ -9,6 +9,7 @@ import org.hwdb.client.FilePath;
 /**
  * This interface is used for all classes that upload and download files.
  * @author Matt
+ * @deprecated Use Syncany's plugins instead.
  */
 public interface FileTransferInterface {
     

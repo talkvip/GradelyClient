@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
- * This class represents a queue for the uploading and downloading of files. This is a singlton as an enum.
+ * <p>This class represents a queue for the uploading and downloading of files. </p>
+ * <p>Either when the remote server notifies the client to down load a file this is called from ServerWatcher, or it is called when we need to upload something, from FileChange </p>
  * @author Matt
+ * TODO Make the queue actually do something. Pulling from the queue does not do anything.
+ * NOTE currently throws a complier warning: "Some input files use unchecked or unsafe operations."
  */
 public class FileTransferQueue{
     

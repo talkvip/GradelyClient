@@ -4,7 +4,7 @@ import java.net.URL;
 import org.hwdb.client.FilePath;
 
 /**
- *
+ * This describes a file transfer operation. Describes commands from the server. Used before we ever hit the Syncany plugins.
  * @author Matt
  */
 public class FileTransferDescription {

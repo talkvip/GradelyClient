@@ -21,7 +21,7 @@ import java.util.Properties;
 import java.io.Serializable;
 
 /**
- *
+ * This was added for complience with Syncany's file upload/downloa plugin architecture. 
  * @author Philipp C. Heckel <philipp.heckel@gmail.com>
  */
 public interface Configurable extends Serializable {

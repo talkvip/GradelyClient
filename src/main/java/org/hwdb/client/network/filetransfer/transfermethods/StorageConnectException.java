@@ -15,18 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.hwdb.client.gui.settings;
-
-//import org.syncany.config.Config;
-import javax.swing.JPanel;
+package org.hwdb.client.network.filetransfer.transfermethods;
 
 /**
  *
  * @author Philipp C. Heckel <philipp.heckel@gmail.com>
  */
-public abstract class SettingsPanel extends JPanel {
-    //protected static final Config config = Config.getInstance();
-       
-    public abstract void load();
-    public abstract void save();
+public class StorageConnectException extends StorageException {
+    public StorageConnectException() {
+    }
+
+    public StorageConnectException(String message) {
+        super(message);
+    }
+
+    public StorageConnectException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public StorageConnectException(Throwable cause) {
+        super(cause);
+    }
+
 }

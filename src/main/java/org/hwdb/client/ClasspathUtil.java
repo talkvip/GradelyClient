@@ -188,22 +188,22 @@ public class ClasspathUtil {
 
     }
 
-    public static void main(String[] args) {
-        long start = System.currentTimeMillis();
-        for (Map.Entry<URL, String> m : ClasspathUtil.getClasspathPackages().entrySet()) {
-            String className = m.getValue();
-
-            if (!className.startsWith("org.syncany.connection.plugins"))
-                continue;
-
-          //  if (!className.endsWith("PluginInfo"))
-            //    continue;
-            
-            System.out.println(m.getValue());
-
-        }
-        long duration = System.currentTimeMillis()-start;
-        System.out.println("duration: "+duration+"ms");
-    }
+//    public static void main(String[] args) {
+//        long start = System.currentTimeMillis();
+//        for (Map.Entry<URL, String> m : ClasspathUtil.getClasspathPackages().entrySet()) {
+//            String className = m.getValue();
+//
+//            if (!className.startsWith("org.syncany.connection.plugins"))
+//                continue;
+//
+//          //  if (!className.endsWith("PluginInfo"))
+//            //    continue;
+//            
+//            System.out.println(m.getValue());
+//
+//        }
+//        long duration = System.currentTimeMillis()-start;
+//        System.out.println("duration: "+duration+"ms");
+//    }
 
 }
