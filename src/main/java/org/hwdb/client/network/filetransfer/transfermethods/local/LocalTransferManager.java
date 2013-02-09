@@ -18,23 +18,18 @@
 package org.hwdb.client.network.filetransfer.transfermethods.local;
 
 import org.hwdb.client.network.filetransfer.transfermethods.AbstractTransferManager;
-import org.syncany.exceptions.LocalFileNotFoundException;
-import org.syncany.exceptions.RemoteFileNotFoundException;
-import org.syncany.exceptions.StorageConnectException;
-import org.syncany.exceptions.StorageException;
 import org.syncany.repository.files.RemoteFile;
-import org.syncany.util.FileUtil;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.derby.iapi.services.io.FileUtil;
-import org.hwdb.client.network.filetransfer.transfermethods.LocalFileNotFoundException;
+import org.hwdb.client.LocalFileNotFoundException;
 import org.hwdb.client.network.filetransfer.transfermethods.RemoteFile;
-import org.hwdb.client.network.filetransfer.transfermethods.RemoteFileNotFoundException;
-import org.hwdb.client.network.filetransfer.transfermethods.StorageConnectException;
-import org.hwdb.client.network.filetransfer.transfermethods.StorageException;
+import org.hwdb.client.network.RemoteFileNotFoundException;
+import org.hwdb.client.network.filetransfer.StorageConnectException;
+import org.hwdb.client.network.filetransfer.StorageException;
 
 /**
  *

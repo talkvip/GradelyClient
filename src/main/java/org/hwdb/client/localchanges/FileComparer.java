@@ -1,7 +1,8 @@
-package org.hwdb.client;
+package org.hwdb.client.localchanges;
 
 
 import java.nio.file.Path;
+import org.hwdb.client.FilePath;
 /**
  *
  * @author Matt

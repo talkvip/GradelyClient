@@ -1,4 +1,6 @@
-package org.hwdb.client;
+package org.hwdb.client.localchanges;
+
+import org.hwdb.client.FilePath;
 
 /**
  * This is a tuple encoding a filepath and a tuple.

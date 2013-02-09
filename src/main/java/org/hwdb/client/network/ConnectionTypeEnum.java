@@ -1,4 +1,4 @@
-package org.hwdb.client;
+package org.hwdb.client.network;
 
 /**
  * Used with network function to determine what type of connection to use for a given upload.

@@ -4,8 +4,9 @@
  */
 
 
-package org.hwdb.client;
+package org.hwdb.client.localchanges;
 
+import org.hwdb.client.localchanges.ThreadFileChangeRouter;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -15,6 +16,8 @@ import java.nio.file.WatchService;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchEvent;
+import org.hwdb.client.FileLocationEnum;
+import org.hwdb.client.FilePath;
 
 
 /**

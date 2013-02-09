@@ -1,8 +1,9 @@
 
-package org.hwdb.client;
+package org.hwdb.client.localchanges;
 
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
+import org.hwdb.client.FilePath;
 
 /**
  * Starts up a new thread and starts figuring out what to do with this new file change.

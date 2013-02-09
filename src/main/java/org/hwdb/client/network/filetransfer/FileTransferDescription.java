@@ -1,10 +1,13 @@
 package org.hwdb.client.network.filetransfer;
 
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import org.hwdb.client.FilePath;
 
 /**
- * This describes a file transfer operation. Describes commands from the server. Used before we ever hit the Syncany plugins.
+ * This describes (and contains all info needed for) a file transfer operation. Describes commands from the server. Used before we ever hit the Syncany plugins.
  * @author Matt
  */
 public class FileTransferDescription {
@@ -12,9 +15,16 @@ public class FileTransferDescription {
     //================= Fields =================================
     
     private UploadOrDownloadEnum uploadOrDownload;
+    private FilePath localFile;
     private FileTransferMethodEnum method;
-    private URL url;
-    private FilePath filepath;
+    
+    /**
+     * All information specific for each method of file transfer is stored here. Including, (but not limited to) password, username, url, bucket, uploaded file name.
+     */
+    private Map settingsStore;
+    
+    //private URL url;
+    
     
     
     //================= Constructors ===========================
@@ -23,8 +33,11 @@ public class FileTransferDescription {
 
         this.uploadOrDownload = uploadOrDownload;
         this.method = method;
-        this.url = url;
-        this.filepath = filepath;
+        this.localFile = filepath;
+        //this.url = url;
+        
+        //This obbject does traverse at least one thread, so synchronizedMap will keep everything running smoothly.
+        settingsStore = Collections.synchronizedMap(new HashMap());
         
     }
 
@@ -61,30 +74,30 @@ public class FileTransferDescription {
     }
 
     /**
-     * @return the url
+     * @return the localFile
      */
-    public URL getUrl() {
-        return url;
+    public FilePath getLocalFile() {
+        return localFile;
     }
 
     /**
-     * @param url the url to set
+     * @param localFile the localFile to set
      */
-    public void setUrl(URL url) {
-        this.url = url;
+    public void setLocalFile(FilePath localFile) {
+        this.localFile = localFile;
     }
 
     /**
-     * @return the filepath
+     * @return the settingsStore
      */
-    public FilePath getFilepath() {
-        return filepath;
+    public Map getSettingsStore() {
+        return settingsStore;
     }
 
     /**
-     * @param filepath the filepath to set
+     * @param settingsStore the settingsStore to set
      */
-    public void setFilepath(FilePath filepath) {
-        this.filepath = filepath;
+    public void setSettingsStore(Map settingsStore) {
+        this.settingsStore = settingsStore;
     }
 }

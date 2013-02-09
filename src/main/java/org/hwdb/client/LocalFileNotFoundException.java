@@ -15,22 +15,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.hwdb.client.network.filetransfer.transfermethods;
+package org.hwdb.client;
 
-import org.hwdb.client.gui.settings.SettingsPanel;
+import org.hwdb.client.network.filetransfer.StorageException;
 
 /**
  *
- * @author Philipp C. Heckel
+ * @author Philipp C. Heckel <philipp.heckel@gmail.com>
  */
-public abstract class ConfigPanel extends SettingsPanel {
-    private Connection connection;
+public class LocalFileNotFoundException extends StorageException {
 
-    public ConfigPanel(Connection connection) {
-        this.connection = connection;
+    public LocalFileNotFoundException() {
     }
 
-    public Connection getConnection() {
-        return connection;
+    public LocalFileNotFoundException(String message) {
+        super(message);
     }
+
+    public LocalFileNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public LocalFileNotFoundException(Throwable cause) {
+        super(cause);
+    }
+
+ 
+ 
 }

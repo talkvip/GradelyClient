@@ -3,7 +3,9 @@
  * and open the template in the editor.
  */
 
-package org.hwdb.client.network;
+package org.hwdb.client.network.remotechanges;
+
+import org.hwdb.client.network.remotechanges.FileUpdater;
 
 /**
  * This class contains thread subclasses so that when a new file change comes in from the server, the program can process the result in paralell.

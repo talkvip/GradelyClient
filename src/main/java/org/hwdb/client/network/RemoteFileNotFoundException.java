@@ -15,25 +15,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.hwdb.client.network.filetransfer.transfermethods;
+package org.hwdb.client.network;
+
+import org.hwdb.client.network.filetransfer.StorageException;
 
 /**
  *
  * @author Philipp C. Heckel <philipp.heckel@gmail.com>
  */
-public class StorageConnectException extends StorageException {
-    public StorageConnectException() {
+public class RemoteFileNotFoundException extends StorageException {
+
+    public RemoteFileNotFoundException() {
     }
 
-    public StorageConnectException(String message) {
+    public RemoteFileNotFoundException(String message) {
         super(message);
     }
 
-    public StorageConnectException(String message, Throwable cause) {
+    public RemoteFileNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public StorageConnectException(Throwable cause) {
+    public RemoteFileNotFoundException(Throwable cause) {
         super(cause);
     }
 

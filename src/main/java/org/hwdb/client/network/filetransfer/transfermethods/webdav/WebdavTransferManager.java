@@ -38,8 +38,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hwdb.client.network.filetransfer.transfermethods.RemoteFile;
-import org.hwdb.client.network.filetransfer.transfermethods.StorageConnectException;
-import org.hwdb.client.network.filetransfer.transfermethods.StorageException;
+import org.hwdb.client.network.filetransfer.StorageConnectException;
+import org.hwdb.client.network.filetransfer.StorageException;
 
 /**
  *

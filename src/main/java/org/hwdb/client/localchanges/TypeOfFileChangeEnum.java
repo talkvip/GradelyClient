@@ -1,4 +1,4 @@
-package org.hwdb.client;
+package org.hwdb.client.localchanges;
 
 /**
  *

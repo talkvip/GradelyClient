@@ -15,29 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.hwdb.client.network.filetransfer.transfermethods;
+package org.hwdb.client.network.filetransfer;
 
 /**
  *
  * @author Philipp C. Heckel <philipp.heckel@gmail.com>
  */
-public class LocalFileNotFoundException extends StorageException {
-
-    public LocalFileNotFoundException() {
-    }
-
-    public LocalFileNotFoundException(String message) {
-        super(message);
-    }
-
-    public LocalFileNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public LocalFileNotFoundException(Throwable cause) {
+public class StorageException extends Exception {
+    public StorageException(Throwable cause) {
         super(cause);
     }
 
- 
- 
+    public StorageException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public StorageException(String message) {
+        super(message);
+    }
+
+    public StorageException() {
+    }
 }

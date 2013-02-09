@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.hwdb.client.network;
+package org.hwdb.client.network.remotechanges;
 
 /**
  * This class takes the parsed json and modifies the file structure to reflect changes by other clients and the server.

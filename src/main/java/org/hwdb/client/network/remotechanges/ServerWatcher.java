@@ -1,4 +1,4 @@
-package org.hwdb.client.network;
+package org.hwdb.client.network.remotechanges;
 
 import java.io.IOException;
 import java.net.Socket;

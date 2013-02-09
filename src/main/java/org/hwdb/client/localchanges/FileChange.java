@@ -1,9 +1,11 @@
-package org.hwdb.client;
+package org.hwdb.client.localchanges;
 
 import java.nio.file.Path;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent.Kind;
 import java.util.ArrayList;
+import org.hwdb.client.FilePath;
+import org.hwdb.client.FilePath;
 
 /**
  * This class handles the file changes. Create Database entry get file from server, finish database entry.
