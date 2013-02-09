@@ -34,6 +34,8 @@ public class Database {
         Connection c = ConnectionPool.getInstance().waitForConnection();
         StringBuilder sb = new StringBuilder();
         
+        sb.append("CREATE TABLE testing (fdd INT);");
+        
         //site_user
         sb.append("CREATE TABLE site_user (");
         sb.append("id INT NOT NULL GENERATED ALWAYS AS IDENTITY, ");

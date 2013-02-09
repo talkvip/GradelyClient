@@ -18,7 +18,7 @@
 package org.hwdb.client;
 
 import java.awt.Desktop;
-import org.syncany.Environment;
+//import org.syncany.Environment;
 import java.awt.FileDialog;
 import java.awt.Frame;
 import java.io.ByteArrayInputStream;
@@ -42,10 +42,10 @@ import java.util.zip.GZIPOutputStream;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.swing.JFileChooser;
-import org.syncany.config.Encryption;
-import org.syncany.gui.linux.BrowseFileRequest;
-import org.syncany.gui.linux.BrowseFileRequest.BrowseType;
-import org.syncany.gui.linux.LinuxNativeClient;
+//import org.syncany.config.Encryption;
+//import org.syncany.gui.linux.BrowseFileRequest;
+//import org.syncany.gui.linux.BrowseFileRequest.BrowseType;
+//import org.syncany.gui.linux.LinuxNativeClient;
 
 /**
  *
@@ -54,7 +54,7 @@ import org.syncany.gui.linux.LinuxNativeClient;
 public class FileUtil {
     private static final double BASE = 1024, KB = BASE, MB = KB * BASE, GB = MB * BASE;
     private static final DecimalFormat df = new DecimalFormat("#.##");
-    private static final Environment env = Environment.getInstance();
+    //private static final Environment env = Environment.getInstance();
 
     public static String formatSize(double size) {
         if (size >= GB) {
@@ -320,19 +320,6 @@ public class FileUtil {
         return out.toByteArray();
     }
 
-    public static byte[] unpack(byte[] packed, Encryption enc)
-            throws IOException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-
-        byte[] decrypted = enc.decrypt(packed);
-        return FileUtil.gunzip(decrypted);
-    }
-
-    public static byte[] pack(byte[] raw, Encryption enc)
-            throws IOException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-
-        byte[] gzipped = FileUtil.gzip(raw);
-        return enc.encrypt(gzipped);
-    }
 
     public static void main(String[] a) throws IOException {
         //System.out.println(getRelativeParentDirectory(new File("/home/pheckel/Coding/syncany/syncany-platop"), new File("/home/pheckel/Coding/syncany/syncany-platop/untitled folder/untitled folder")));
@@ -351,7 +338,7 @@ public class FileUtil {
             Desktop.getDesktop().open(file);
         } catch (Exception ex) { /* Fressen */ }
     }
-
+/*
     public static File showBrowseDirectoryDialog() {
         switch (env.getOperatingSystem()) {
             case Linux:
@@ -404,7 +391,8 @@ public class FileUtil {
             throw new RuntimeException("Unknown browse type!");
         }
     }
-
+*/
+    
     private static File showBrowseDialogMac(int fileDialogSelectionMode) {
         // AWT looks best on Mac:
         // http://today.java.net/pub/a/today/2004/01/29/swing.html

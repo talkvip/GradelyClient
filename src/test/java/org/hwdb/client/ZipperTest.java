@@ -31,16 +31,7 @@ public class ZipperTest {
     
     @Before
     public void setUp() {
-        
-        try
-        {
-        
-            Configuration.writeConfigurationFile();
-        }
-        catch(Exception e)
-        {
 
-        }
         
     }
     

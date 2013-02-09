@@ -45,11 +45,11 @@ public class Client {
 
             // Help
             if (cl.hasOption("help")) {
-                new HelpFormatter().printHelp(Configuration.getAppName(), options);
+                new HelpFormatter().printHelp(Configuration.getInstance().getAppName(), options);
                 System.exit(0);
             }
 
-            Configuration.readConfigurationFile();
+            Configuration.getInstance().load();
 
 
         }

@@ -45,6 +45,15 @@
   <dependencies>
       
     <dependency>
+      <!-- logger -->
+      <groupId>org.tinylog</groupId>
+      <artifactId>tinylog</artifactId>
+      <version>0.7.1</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/lib/tinylog.jar</systemPath>
+    </dependency> 
+
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.10</version>
@@ -104,6 +113,8 @@
        <groupId>com.nothome</groupId>
        <artifactId>javaxdelta</artifactId>
        <version>1.1</version>
+       <scope>system</scope>
+       <systemPath>${project.basedir}/lib/javaxdelta-1.1.jar</systemPath>
        <!-- If using netbeans rightclick javaxdelta-1.1.jar and select manuall install. Download from http://sourceforge.net/projects/javaxdelta/?source=dlp -->
        <!-- This dependenty is not in any maven repositorys. Version 2.0.0 won't work. Manually install with ( mvn install:install-file -Dfile=pathToFileAfterYouDownloadedToAnyPlace -DgroupId=com.nothome -DartifactId=javaxdelta -Dversion=1.1 -Dpackaging=jar ) -->
    </dependency>

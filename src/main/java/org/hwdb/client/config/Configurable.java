@@ -17,14 +17,30 @@
  */
 package org.hwdb.client.config;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
 import java.io.Serializable;
 
 /**
- * This was added for complience with Syncany's file upload/downloa plugin architecture. 
+ * This was added for complience with Syncany's file upload/download plugin architecture. 
  * @author Philipp C. Heckel <philipp.heckel@gmail.com>
+ * 
  */
 public interface Configurable extends Serializable {
-    public void load(Properties node) throws ConfigException;
-    public void save(Properties node);
+
+    
+    /**
+     * Turns a properties file back into an object.
+     * @throws FileNotFoundException If the file does not exist
+     * @throws IOException If the file cannot be read.
+     */
+    public void load() throws FileNotFoundException, IOException;
+    
+     /**
+     * <p>Saves the config file as a properties file.</p>
+     * <p>Each sub-configuration is saved in it's own file on the hard disk. The main config.Configuration contains the location of the configuration directory.</p>
+     * @throws IOException If the file cannot be written to.
+     */
+    public void save() throws IOException;
 }

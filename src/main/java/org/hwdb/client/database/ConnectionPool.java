@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.util.ArrayList;
 import org.hwdb.client.FilePath;
-import org.hwdb.client.Logging;
+import org.hwdb.client.logging.Logging;
 
 /**
  * The connection pool gets and returns database connections, allowing for reuse. This class is a singleton.
@@ -32,9 +32,10 @@ public class ConnectionPool {
      */
     public ConnectionPool() {
         //How many database connection should we obtain?
-        maxConnections = Configuration.getMaxDatabaseConnections();
-        user = Configuration.getDatabaseUser();
-        password = Configuration.getDatabasePassword();
+        Configuration config = Configuration.getInstance();
+        maxConnections = config.getMaxDatabaseConnections();
+        user = config.getDatabaseUser();
+        password = config.getDatabasePassword();
 
     }
     
@@ -256,7 +257,7 @@ public class ConnectionPool {
         }
         catch(SQLException ex)
         {
-            org.hwdb.client.Logging.log("ConnectionPool.shutDown() : Database did not shutdown.", ex);
+            org.hwdb.client.logging.Logging.log("ConnectionPool.shutDown() : Database did not shutdown.", ex);
         }
         
     }

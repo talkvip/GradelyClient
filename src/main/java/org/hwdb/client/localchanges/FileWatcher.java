@@ -6,7 +6,6 @@
 
 package org.hwdb.client.localchanges;
 
-import org.hwdb.client.localchanges.ThreadFileChangeRouter;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -16,6 +15,9 @@ import java.nio.file.WatchService;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchEvent;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import org.hwdb.client.FileLocationEnum;
 import org.hwdb.client.FilePath;
 
@@ -43,10 +45,10 @@ public class FileWatcher {
     
     /**
      * Start() starts watching the file system for changes.
+     * @see http://e-blog-java.blogspot.com/2011/03/how-to-watch-file-system-for-changes-in.html
      */
     public void start() throws IOException, InterruptedException
     {
-        // see http://e-blog-java.blogspot.com/2011/03/how-to-watch-file-system-for-changes-in.html
         
         //Figure out where the watcher watches.
         Path dir = Paths.get(watchDir.getAbsolutePath());

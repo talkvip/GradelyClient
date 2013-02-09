@@ -30,13 +30,15 @@ public class FilePath {
         
         String firstPart = "/";
         
+        Configuration config = Configuration.getInstance();
+        
         switch (baseDirectory){
-            
-            case ROOT: firstPart = Configuration.getRootDirecory(); break;
-            case USERPROFILE: firstPart = Configuration.getUserProfileDirectory(); break;
-            case USERAPPS: firstPart = Configuration.getUserAppsDirectory(); break;
-            case INSTALL: firstPart = Configuration.getInstallDirectory(); break;
-            case BOXFOLDER: firstPart = Configuration.getBoxFolderDirectory(); break;
+
+            case ROOT: firstPart = config.getRootDirecory(); break;
+            case USERPROFILE: firstPart = config.getUserProfileDirectory(); break;
+            case USERAPPS: firstPart = config.getUserAppsDirectory(); break;
+            case INSTALL: firstPart = config.getInstallDirectory(); break;
+            case BOXFOLDER: firstPart = config.getBoxFolderDirectory(); break;
             
         }
         

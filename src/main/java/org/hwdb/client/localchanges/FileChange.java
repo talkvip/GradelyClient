@@ -187,6 +187,8 @@ public class FileChange {
             //If the file is modified:
                 //Compute checksum
                 //check if the file modified matches the check sum in the database. If it matches return true.
+    
+        return false;
     }
     
     
@@ -215,6 +217,8 @@ public class FileChange {
     public static boolean isReadOnly(FilePath modified)
     {
         //Check the database if the file is read-only, or should be modified.
+        
+        return false;
     }
 
 }
