@@ -3,7 +3,10 @@
 
 package org.hwdb.client;
 
-import org.hwdb.client.config.Configuration;
+import org.gradely.client.FilePath;
+import org.gradely.client.FileLocationEnum;
+import org.gradely.client.Zipper;
+import org.gradely.client.config.Configuration;
 import java.io.FileNotFoundException;
 import org.junit.After;
 import org.junit.AfterClass;

@@ -3,6 +3,9 @@
 
 package org.hwdb.client;
 
+import org.gradely.client.FilePath;
+import org.gradely.client.FileLocationEnum;
+import org.gradely.client.DeltaEncoder;
 import org.junit.Test;
 import org.junit.After;
 import org.junit.AfterClass;

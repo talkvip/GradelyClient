@@ -1,14 +1,15 @@
 package org.hwdb.client.database;
 
+import org.gradely.client.database.ConnectionPool;
 import java.sql.Connection;
-import org.hwdb.client.FileLocationEnum;
+import org.gradely.client.FileLocationEnum;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.hwdb.client.FilePath;
+import org.gradely.client.FilePath;
 
 /**
  *

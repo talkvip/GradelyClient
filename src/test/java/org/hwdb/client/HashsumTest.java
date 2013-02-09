@@ -1,9 +1,9 @@
 
 package org.hwdb.client;
 
-import org.hwdb.client.FileLocationEnum;
-import org.hwdb.client.FilePath;
-import org.hwdb.client.Hashsum;
+import org.gradely.client.FileLocationEnum;
+import org.gradely.client.FilePath;
+import org.gradely.client.Hashsum;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

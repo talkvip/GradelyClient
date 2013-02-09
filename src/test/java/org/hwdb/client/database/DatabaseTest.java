@@ -1,8 +1,9 @@
 
 package org.hwdb.client.database;
 
+import org.gradely.client.database.Database;
 import java.sql.SQLException;
-import org.hwdb.client.FilePath;
+import org.gradely.client.FilePath;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
