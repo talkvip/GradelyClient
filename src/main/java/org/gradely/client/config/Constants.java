@@ -17,13 +17,19 @@
  */
 package org.gradely.client.config;
 
-import java.util.Locale;
-import java.util.regex.Pattern;
 
 /**
  * Originally from syncany. Needed for plugin. Plugins for file upload and download. Subject to reworking.
  * @author Philipp C. Heckel
+ * @author Matt
  */
 public abstract class Constants {
+    
+        //name of the application, no spaces, all lower case.
+    public static final String appName = "gradely";
+    public  static final String formalAppName = "Gradely";
+    
+    //----------------- config file -------------------------------
+    public static final String configurationFileName = appName+".props";// = appName + ".props";
 
 }

@@ -1,0 +1,10 @@
+----------------------------------------------------------------
+Sat Feb 09 18:50:14 MST 2013:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-013c-c1cb-a560-000000a74648 
+on database directory C:\Users\Matt\Documents\Matthew\Personal Projects\Paperless Homework Turn In\ClientMaven2\database\gradely  with class loader sun.misc.Launcher$AppClassLoader@19ee1ac 
+Loaded from file:/C:/Users/Matt/.m2/repository/org/apache/derby/derby/10.9.1.0/derby-10.9.1.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_07-b11
+user.dir=C:\Users\Matt\Documents\Matthew\Personal Projects\Paperless Homework Turn In\ClientMaven2
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

@@ -11,11 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This configuration singleton class gets, contains, and writes, all of the possible application configuration values.
- * 
- * 
  * @author Matt
  */
 public class Configuration implements Configurable {
@@ -31,19 +30,20 @@ public class Configuration implements Configurable {
     
     //----------------- app name -------------------------------
     //name of the application, no spaces, all lower case.
-    private String appName = "hwdb";
-    private String formalAppName = "H.W.D.B.";
+    private final String appName = "gradely";
+    private final String formalAppName = "Gradely";
     
     //----------------- config file -------------------------------
-    private String configurationFileName;// = appName + ".props";
+    private final String configurationFileName = appName+".props";// = appName + ".props";
     //has read from the harddrive yet?
     private boolean hasRead = false;
     
     //----------------- Database -------------------------------
-    private int maxDatabaseConnections;// = 8;
+    private int maxDatabaseConnections; //Must be non-zero in order to connect to the database. // = 8;
     private String databasePassword; // = "";
     private String databaseUser; // = appName;
-    private String databaseDefinitionLocation;
+    private String databaseLocation;
+    //private String databaseDefinitionLocation;
     
     //----------------- File System ----------------------------
     // see FileLocationEnum for discriptions of these settings.
@@ -94,7 +94,7 @@ public class Configuration implements Configurable {
     @Override
     public void load() throws FileNotFoundException, IOException {
 
-       File configFile = findConfigurationFile();
+       File configFile = Defaults.defaultConfigurationFile();
        //Cool! now that we have found the file, lets parse the file.
        
        Properties p = new Properties();
@@ -107,7 +107,7 @@ public class Configuration implements Configurable {
        
        propertiesToConfiguration(p);
        
-       setHasRead(true);
+       hasRead = true;
 
     }
     
@@ -119,7 +119,7 @@ public class Configuration implements Configurable {
      */
     public Properties getProperties() throws FileNotFoundException, IOException
     {
-        File configFile = findConfigurationFile();
+       File configFile = Defaults.defaultConfigurationFile();
         
        Properties p = new Properties();
        p.load(new FileInputStream(configFile));
@@ -150,7 +150,7 @@ public class Configuration implements Configurable {
        
        propertiesToConfiguration(p);
 
-       setHasRead(true);
+       hasRead = true;
 
     }
     
@@ -163,7 +163,7 @@ public class Configuration implements Configurable {
         
         Properties p = propertiesFromConfiguration();
 
-        OutputStream outstr = new FileOutputStream(findConfigurationFile(), false); //false id for don't append
+        OutputStream outstr = new FileOutputStream(Defaults.defaultConfigurationFile(), false); //false id for don't append
         
         //Let us write a time stamp out for fun.
         Calendar cal = Calendar.getInstance();
@@ -188,16 +188,18 @@ public class Configuration implements Configurable {
         
         //app name
         //Configuration.setAppName(p.getProperty("appName"));
-        setFormalAppName(p.getProperty("formalAppName"));
+        //setFormalAppName(p.getProperty("formalAppName"));
         
         //config file
-        setConfigurationFileName(p.getProperty("configurationFileName"));
+        //setConfigurationFileName(p.getProperty("configurationFileName"));
         
         //Database
         setDatabaseUser(p.getProperty("databaseUser"));
         setDatabasePassword(p.getProperty("databasePassword"));
         setMaxDatabaseConnections(Integer.parseInt(p.getProperty("maxDatabaseConnections")));
+        setDatabaseLocation(p.getProperty("databaseLocation"));
         //setDatabaseDefinitionLocation(p.getProperty("databaseDefinitionLocation"));
+        
         
         //directory locations
         setInstallDirectory(p.getProperty("installDirectory"));
@@ -227,17 +229,18 @@ public class Configuration implements Configurable {
         //os
         p.setProperty("os", getOs().name());
         
-        //app name
-        p.setProperty("appName", getAppName());
-        p.setProperty("formalAppName", getFormalAppName());
+        //app name MOVED TO CONSTANTS
+        //p.setProperty("appName", getAppName());
+        //p.setProperty("formalAppName", getFormalAppName());
         
         //config file
-        p.setProperty("configurationFileName", getConfigurationFileName());
+        //p.setProperty("configurationFileName", getConfigurationFileName());
         
         //database
         p.setProperty("databaseUser", getDatabaseUser());
         p.setProperty("databasePassword", getDatabasePassword());
         p.setProperty("maxDatabaseConnections",Integer.toString(getMaxDatabaseConnections()));
+        p.setProperty("databaseLocation", getDatabaseLocation());
         //p.getProperty("databaseDefinitionLocation", getDatabaseDefinitionLocation());
         
         //directory locations
@@ -298,143 +301,45 @@ public class Configuration implements Configurable {
         return false;
     }
     
-    /**
-     * Finds the users application settings directory. (i.e. .../username/appdata/gradely)
-     * @return A file representing the path
-     */
-    public File findUserAppsDirectory()
-    {
-       OperatingSystemEnum operatingSystem = findOperatingSystem();
-       String finishingDirectory = "";
-       
-       if(operatingSystem == OperatingSystemEnum.WINDOWS)
-       {
-           finishingDirectory = "/appData/Roaming/"+getAppName();
-       }
-       else if(operatingSystem == OperatingSystemEnum.OSX)
-       {
-           finishingDirectory = "."+getAppName()+"/config";
-       }
-       else if(operatingSystem == OperatingSystemEnum.LINUX)
-       {
-           finishingDirectory = "Library/Application Support/"+getAppName();
-       }
-       else if(operatingSystem == OperatingSystemEnum.OTHER)
-       {
-           finishingDirectory = "."+getAppName();
-       }
-
-       String startingDirectory = System.getProperty("user.home");
-       
-       File configLocation = new File(startingDirectory,finishingDirectory);
-       
-       return configLocation;
-    }
-    
-    /**
-     * Figures out, based on the operating system, where the configuation folder is.
-     * @return A file object representing the configuration directory.
-     */
-    public File findConfigurationDirectory()
-    {
-       OperatingSystemEnum operatingSystem = findOperatingSystem();
-       String finishingDirectory = "";
-       
-       if(operatingSystem == OperatingSystemEnum.WINDOWS)
-       {
-           finishingDirectory = "/appData/Roaming/"+getAppName()+"/config";
-       }
-       else if(operatingSystem == OperatingSystemEnum.OSX)
-       {
-           finishingDirectory = "."+getAppName()+"/config";
-       }
-       else if(operatingSystem == OperatingSystemEnum.LINUX)
-       {
-           finishingDirectory = "Library/Application Support/"+getAppName()+"/config";
-       }
-       else if(operatingSystem == OperatingSystemEnum.OTHER)
-       {
-           finishingDirectory = "."+getAppName()+"/config";
-       }
-
-       String startingDirectory = System.getProperty("user.home");
-       
-       File configLocation = new File(startingDirectory,finishingDirectory);
-       
-       return configLocation;
-    }
-    
-    
-    /**
-     * This function determines, based on the operating system, the proper location of the configuration file.
-     * @return Returns a file object containing the proper location for the configuration file.
-     */
-    private File findConfigurationFile() throws FileNotFoundException
-    {
-       //We are going to assume that the configuration file is in:
-       // C:/Users/username/appData/Roaming/appName
-       // /home/username/.appName
-       // /Macintosh HD/Users/<username>/Library/Application Support/appName
-       
-       File directoryLocation = findConfigurationDirectory();
-       
-       File configLocation = new File(directoryLocation,"/"+getConfigurationFileName());
-       
-       if(!configLocation.exists())
-       {
-           //well crap! We don't seem to be able to file the file.
-           throw new FileNotFoundException("Unable to find the configuration file. Filepath searched: " + configLocation.getAbsolutePath());
-       }
-       
-       return configLocation;
-       
-    }
-    
-    /**
-     * Figures out what operating system the JVM is running on.
-     * @return WINDOWS, OSX, LINUX, OTHER
-     */
-    public static OperatingSystemEnum findOperatingSystem()
-    {
-       String operatingSystem = System.getProperty("os.name").toLowerCase();
-       //use regex to search the string for os
-       if( Pattern.matches("windows",operatingSystem))
-       {
-           //windows os
-           return OperatingSystemEnum.WINDOWS;
-       }
-       else if (Pattern.matches("nux|nix|aix",operatingSystem))
-       {
-           //unix/linux
-           return OperatingSystemEnum.LINUX; 
-       }
-       else if (Pattern.matches("mac|osx", operatingSystem))
-       {
-           //mac
-           return OperatingSystemEnum.OSX;
-       }
-       else
-       {
-           return OperatingSystemEnum.OTHER;
-       }
-    }
+  
     
     
     
     //---------------- Getters and Setters ---------------------------
-     /**
+
+    /**
+     * @return the firstRun
+     */
+    public boolean isFirstRun() {
+        return firstRun;
+    }
+
+    /**
      * @return the os
      */
     public OperatingSystemEnum getOs() {
-        
-        //Will be null if file read was unsucessful
-        if (os == null)
-        {
-            //Set Default
-            os = findOperatingSystem();
-        }
-        
         return os;
+    }
+
+    /**
+     * @return the appName
+     */
+    public String getAppName() {
+        return appName;
+    }
+
+    /**
+     * @return the formalAppName
+     */
+    public String getFormalAppName() {
+        return formalAppName;
+    }
+
+    /**
+     * @return the configurationFileName
+     */
+    public String getConfigurationFileName() {
+        return configurationFileName;
     }
 
     /**
@@ -444,57 +349,16 @@ public class Configuration implements Configurable {
         
         if(maxDatabaseConnections == 0)
         {
-            try
-            {
-                Properties p = getProperties();
-                maxDatabaseConnections = Integer.parseInt(p.getProperty("maxDatabaseConnections"));
-            }
-            catch (Exception e)
-            {
-                //Can't get then properties file, no wonder the thing came up null. //TODO log
-            }
-        }
-                //Will be null if file read was unsucessful
-        if (maxDatabaseConnections == 0)
-        {
-            //Set Default
-            maxDatabaseConnections = 8;
+            maxDatabaseConnections = Defaults.defaultMaxDatabaseConnection();
         }
         
         return maxDatabaseConnections;
     }
 
     /**
-     * @param maxDatabaseConnections the maxDatabaseConnections to set
-     */
-    public void setMaxDatabaseConnections(int maxDatabaseConnections) {
-        this.maxDatabaseConnections = maxDatabaseConnections;
-    }
-    
-        /**
      * @return the databasePassword
      */
     public String getDatabasePassword() {
-        
-        if(databasePassword == null)
-        {
-            try
-            {
-                Properties p = getProperties();
-                databasePassword = p.getProperty("databasePassword");
-            }
-            catch (Exception e)
-            {
-                //Can't get then properties file, no wonder the thing came up null. //TODO log
-            }
-        }
-                //Will be null if file read was unsucessful
-        if (databasePassword == null)
-        {
-            //Set Default
-            databasePassword = "";
-        }
-        
         return databasePassword;
     }
 
@@ -502,27 +366,94 @@ public class Configuration implements Configurable {
      * @return the databaseUser
      */
     public String getDatabaseUser() {
-        
-        if(databaseUser == null)
-        {
-            try
-            {
-                Properties p = getProperties();
-                databaseUser = p.getProperty("databaseUser");
-            }
-            catch (Exception e)
-            {
-                //Can't get then properties file, no wonder the thing came up null. //TODO log
-            }
-        }
-                //Will be null if file read was unsucessful
-        if (databaseUser == null)
-        {
-            //Set Default
-            databaseUser = getAppName();
-        }
-        
         return databaseUser;
+    }
+
+     /**
+     * @return the databaseLocation
+     */
+    public String getDatabaseLocation() {
+        
+        if(databaseLocation == null)
+        {
+            databaseLocation = Defaults.defaultDatabaseLocation();
+        }
+        
+        return databaseLocation;
+    }
+    
+    /**
+     * @return the rootDirecory
+     */
+    public String getRootDirecory() {
+        return rootDirecory;
+    }
+
+    /**
+     * @return the userProfileDirectory
+     */
+    public String getUserProfileDirectory() {
+        
+        if (userProfileDirectory == null)
+        {
+            userProfileDirectory = System.getProperty("user.home");
+        }
+        
+        return userProfileDirectory;
+    }
+
+    /**
+     * @return the userAppsDirectory
+     */
+    public String getUserAppsDirectory() {
+        
+        if(userAppsDirectory == null)
+        {
+            userAppsDirectory = Defaults.defaultUserAppsDirectory().getAbsolutePath();
+        }
+        
+        return userAppsDirectory;
+    }
+
+    /**
+     * @return the installDirectory
+     */
+    public String getInstallDirectory() {
+        return installDirectory;
+    }
+
+    /**
+     * @return the boxFolderDirectory
+     */
+    public String getBoxFolderDirectory() {
+        return boxFolderDirectory;
+    }
+
+    /**
+     * @return the logFilePath
+     */
+    public String getLogFilePath() {
+        
+        if (StringUtils.isEmpty(logFilePath))
+        {
+            logFilePath = Defaults.defaultLogFilePath();
+        }
+        
+        return logFilePath;
+    }
+
+    /**
+     * @return the serverName
+     */
+    public String getServerName() {
+        return serverName;
+    }
+
+    /**
+     * @param firstRun the firstRun to set
+     */
+    public void setFirstRun(boolean firstRun) {
+        this.firstRun = firstRun;
     }
 
     /**
@@ -530,6 +461,13 @@ public class Configuration implements Configurable {
      */
     public void setOs(OperatingSystemEnum os) {
         this.os = os;
+    }
+
+    /**
+     * @param maxDatabaseConnections the maxDatabaseConnections to set
+     */
+    public void setMaxDatabaseConnections(int maxDatabaseConnections) {
+        this.maxDatabaseConnections = maxDatabaseConnections;
     }
 
     /**
@@ -547,58 +485,10 @@ public class Configuration implements Configurable {
     }
 
     /**
-     * @return the rootDirecory
-     */
-    public String getRootDirecory() {
-        
-        if(rootDirecory == null)
-        {
-            try
-            {
-                Properties p = getProperties();
-                rootDirecory = p.getProperty("rootDirecory");
-            }
-            catch (Exception e)
-            {
-                //Can't get then properties file, no wonder the thing came up null. //TODO log
-            }
-        }
-        
-        return rootDirecory;
-    }
-
-    /**
      * @param rootDirecory the rootDirecory to set
      */
     public void setRootDirecory(String rootDirecory) {
         this.rootDirecory = rootDirecory;
-    }
-
-    /**
-     * @return the userProfileDirectory
-     */
-    public String getUserProfileDirectory() {
-
-        if(userProfileDirectory == null)
-        {
-            try
-            {
-                Properties p = getProperties();
-                userProfileDirectory = p.getProperty("userProfileDirectory");
-            }
-            catch (Exception e)
-            {
-                //Can't get then properties file, no wonder the thing came up null. //TODO log
-            }
-        }
-                //Will be null if file read was unsucessful
-        if (userProfileDirectory == null)
-        {
-            //Set Default
-            userProfileDirectory = System.getProperty("user.home");
-        }
-        
-        return userProfileDirectory;
     }
 
     /**
@@ -609,65 +499,10 @@ public class Configuration implements Configurable {
     }
 
     /**
-     * @return the userAppsDirectory
-     */
-    public String getUserAppsDirectory() {
-        
-        if(userAppsDirectory == null)
-        {
-            try
-            {
-                Properties p = getProperties();
-                userAppsDirectory = p.getProperty("userAppsDirectory");
-            }
-            catch (Exception e)
-            {
-                //Can't get then properties file, no wonder the thing came up null. //TODO log
-            }
-        }
-                //Will be null if file read was unsucessful
-        if (userAppsDirectory == null)
-        {
-            //Set Default
-            userAppsDirectory = findUserAppsDirectory().getAbsolutePath();
-        }
-        
-        return userAppsDirectory;
-    }
-
-    /**
      * @param userAppsDirectory the userAppsDirectory to set
      */
     public void setUserAppsDirectory(String userAppsDirectory) {
         this.userAppsDirectory = userAppsDirectory;
-    }
-
-    /**
-     * @return the installDirectory
-     */
-    public String getInstallDirectory() {
-        
-       if(installDirectory == null)
-        {
-            try
-            {
-                Properties p = getProperties();
-                installDirectory = p.getProperty("installDirectory");
-            }
-            catch (Exception e)
-            {
-                //Can't get then properties file, no wonder the thing came up null. //TODO log
-            }
-        }
-                //Will be null if file read was unsucessful
-        if (installDirectory == null)
-        {
-            //Set Default
-            //TODO where do we install?
-            //installDirectory = ;
-        }
-
-        return installDirectory;
     }
 
     /**
@@ -678,144 +513,10 @@ public class Configuration implements Configurable {
     }
 
     /**
-     * @return the boxFolderDirectory
-     */
-    public String getBoxFolderDirectory() {
-        
-        if(boxFolderDirectory == null)
-        {
-            try
-            {
-                Properties p = getProperties();
-                boxFolderDirectory = p.getProperty("boxFolderDirectory");
-            }
-            catch (Exception e)
-            {
-                //Can't get then properties file, no wonder the thing came up null. //TODO log
-            }
-        }
-
-        return boxFolderDirectory;
-    }
-
-    /**
      * @param boxFolderDirectory the boxFolderDirectory to set
      */
     public void setBoxFolderDirectory(String boxFolderDirectory) {
         this.boxFolderDirectory = boxFolderDirectory;
-    }
-
-    /**
-     * @return the appName
-     */
-    public String getAppName() {
-        return appName;
-    }
-
-
-    /**
-     * @return the formalAppName
-     */
-    public String getFormalAppName() {
-        return formalAppName;
-    }
-
-    /**
-     * @param formalAppName the formalAppName to set
-     */
-    public void setFormalAppName(String formalAppName) {
-        this.formalAppName = formalAppName;
-    }
-
-    /**
-     * @return the configurationFileName
-     */
-    public String getConfigurationFileName() {
-        
-        if(configurationFileName == null)
-        {
-            try
-            {
-                Properties p = getProperties();
-                configurationFileName = p.getProperty("configurationFileName");
-            }
-            catch (Exception e)
-            {
-                //Can't get then properties file, no wonder the thing came up null. //TODO log
-            }
-        }
-                //Will be null if file read was unsucessful
-        if (configurationFileName == null)
-        {
-            //Set Default
-            configurationFileName = "config.props";
-        }
-
-        return configurationFileName;
-    }
-
-    /**
-     * @param configurationFileName the configurationFileName to set
-     */
-    public void setConfigurationFileName(String configurationFileName) {
-        this.configurationFileName = configurationFileName;
-    }
-
-    /**
-     * @return the serverName
-     */
-    public String getServerName() {
-        
-        if(serverName == null)
-        {
-            try
-            {
-                Properties p = getProperties();
-                serverName = p.getProperty("ServerName");
-            }
-            catch (Exception e)
-            {
-                //Can't get then properties file, no wonder the thing came up null. //TODO log
-            }
-        }
-
-        
-        return serverName;
-    }
-
-    /**
-     * @param serverName the serverName to set
-     */
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
-    }
-
-    /**
-     * @return the logFilePath
-     */
-    public String getLogFilePath() {
-        
-                if(logFilePath == null)
-        {
-            try
-            {
-                Properties p = getProperties();
-                logFilePath = p.getProperty("logFilePath");
-            }
-            catch (Exception e)
-            {
-                //Can't get then properties file, no wonder the thing came up null. //TODO log
-            }
-        }
-                //Will be null if file read was unsucessful
-        if (logFilePath == null)
-        {
-            //Set Default
-            logFilePath = new File(findUserAppsDirectory(),"/"+appName+".log").getAbsolutePath();
-        }
-
-        
-        return logFilePath;
     }
 
     /**
@@ -826,39 +527,20 @@ public class Configuration implements Configurable {
     }
 
     /**
-     * @param aAppName the appName to set
+     * @param serverName the serverName to set
      */
-    public void setAppName(String aAppName) {
-        appName = aAppName;
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
+
+
 
     /**
-     * @return the firstRun
+     * @param databaseLocation the databaseLocation to set
      */
-    public boolean isFirstRun() {
-        return firstRun;
+    public void setDatabaseLocation(String databaseLocation) {
+        this.databaseLocation = databaseLocation;
     }
-
-    /**
-     * @return the hasRead
-     */
-    public boolean isHasRead() {
-        return hasRead;
-    }
-
-    /**
-     * @param firstRun the firstRun to set
-     */
-    public void setFirstRun(boolean firstRun) {
-        this.firstRun = firstRun;
-    }
-
-    /**
-     * @param hasRead the hasRead to set
-     */
-    public void setHasRead(boolean hasRead) {
-        this.hasRead = hasRead;
-    }
-
+  
 
 }

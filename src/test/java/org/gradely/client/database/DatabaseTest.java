@@ -1,5 +1,5 @@
 
-package org.hwdb.client.database;
+package org.gradely.client.database;
 
 import org.gradely.client.database.Database;
 import java.sql.SQLException;

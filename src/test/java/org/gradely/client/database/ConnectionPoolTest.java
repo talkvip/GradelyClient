@@ -1,4 +1,4 @@
-package org.hwdb.client.database;
+package org.gradely.client.database;
 
 import org.gradely.client.database.ConnectionPool;
 import java.sql.Connection;
@@ -21,7 +21,7 @@ public class ConnectionPoolTest {
         
        try
        {
-        ConnectionPool.getInstance().createDatabase(new FilePath("/desktop/testing",FileLocationEnum.USERPROFILE),"testing");
+        ConnectionPool.getInstance().createDatabase();
        }
        catch(Exception e)
        {

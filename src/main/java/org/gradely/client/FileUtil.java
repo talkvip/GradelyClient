@@ -303,29 +303,22 @@ public class FileUtil {
         return success;
     }
 
-    public static byte[] gzip(byte[] content) throws IOException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
-        gzipOutputStream.write(content);
-        gzipOutputStream.close();
-
-        return byteArrayOutputStream.toByteArray();
-    }
-
-    public static byte[] gunzip(byte[] contentBytes) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        copy(new GZIPInputStream(new ByteArrayInputStream(contentBytes)), out);
-
-        return out.toByteArray();
-    }
-
-
-    public static void main(String[] a) throws IOException {
-        //System.out.println(getRelativeParentDirectory(new File("/home/pheckel/Coding/syncany/syncany-platop"), new File("/home/pheckel/Coding/syncany/syncany-platop/untitled folder/untitled folder")));
-        //copy(new File("/home/pheckel/freed"), new File("/home/pheckel/freed2"), 100);
-        System.out.println(new File("/home/pheckel").getParentFile());
-    }
+//    public static byte[] gzip(byte[] content) throws IOException {
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//
+//        GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
+//        gzipOutputStream.write(content);
+//        gzipOutputStream.close();
+//
+//        return byteArrayOutputStream.toByteArray();
+//    }
+//
+//    public static byte[] gunzip(byte[] contentBytes) throws IOException {
+//        ByteArrayOutputStream out = new ByteArrayOutputStream();
+//        copy(new GZIPInputStream(new ByteArrayInputStream(contentBytes)), out);
+//
+//        return out.toByteArray();
+//    }
 
     public static void browsePage(String url) {
         try {

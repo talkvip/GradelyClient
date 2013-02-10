@@ -20,10 +20,14 @@ public class ConnectionPool {
     
     private int currentConnections; // connections in list + connections out
     private int maxConnections;
+    private FilePath databaseLocation;
+    private String databaseName;
     private ArrayList<Connection> connectionLst = new ArrayList<Connection>();
     private boolean isStarted = false; //shows if the database is up and running;
     private String user;
     private String password;
+    
+    private static ConnectionPool instance;
     
     //================= Constructors ===========================
     
@@ -36,17 +40,9 @@ public class ConnectionPool {
         maxConnections = config.getMaxDatabaseConnections();
         user = config.getDatabaseUser();
         password = config.getDatabasePassword();
-
+        databaseName = config.getAppName();
+        databaseLocation = new FilePath(config.getDatabaseLocation());
     }
-    
-     /**
-     * This ConnectionPool class is a dummy that stores the configuration object.
-     */
-    private static class ConnectionPoolHolder {
-
-        private static final ConnectionPool INSTANCE = new ConnectionPool();
-    }
-    
 
     //================= Methods ================================
     
@@ -56,7 +52,12 @@ public class ConnectionPool {
      */
     public static ConnectionPool getInstance(){
         
-        return ConnectionPoolHolder.INSTANCE;
+        if (ConnectionPool.instance == null)
+        {
+            ConnectionPool.instance = new ConnectionPool();
+        }
+        
+        return ConnectionPool.instance;
         
     }
     
@@ -134,10 +135,11 @@ public class ConnectionPool {
                 return false;
             }
 
-            if(c.isValid(7) == false)
+            if(c.isValid(7) == false) // 7 is the timeout in sec
             {
                 return false;
             }
+            
         
         }
         catch(SQLException e)
@@ -209,7 +211,9 @@ public class ConnectionPool {
             startUp();
         }
 
-        Connection conn = DriverManager.getConnection("jdbc:derby:derbyDB", user, password);
+        File databasePath = new File(databaseLocation.getAbsolutePath(),databaseName);
+        
+        Connection conn = DriverManager.getConnection("jdbc:derby:"+databasePath.getAbsolutePath(), user, password); 
         
         return conn;
 
@@ -219,7 +223,7 @@ public class ConnectionPool {
      * This creates a brand new database on the computer. It does this through the connection string.
      * @return Returns an open connection for use.
      */
-    public Connection createDatabase(FilePath databaseLocation, String databaseName)throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException
+    public Connection createDatabase()throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException
     {
         //Is the database even running?
         if (isStarted == false)
@@ -229,7 +233,7 @@ public class ConnectionPool {
         
         File databasePath = new File(databaseLocation.getAbsolutePath(),databaseName);
 
-        Connection conn = DriverManager.getConnection("jdbc:derby:"+databasePath.getAbsolutePath()+";create=true");//, user, password);
+        Connection conn = DriverManager.getConnection("jdbc:derby:"+databasePath.getAbsolutePath()+";create=true", user, password);
         
         return conn;
     }
