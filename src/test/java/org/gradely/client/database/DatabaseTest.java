@@ -35,23 +35,22 @@ public class DatabaseTest {
     @After
     public void tearDown() {
     }
-
-    /**
-     * Test of createTables method, of class Database.
-     */
+    
     @Test
-    public void testCreateTables() throws Exception {
-        System.out.println("createTables");
+    public void testInitilizeDatabase() throws Exception {
+        
+         System.out.println("initilizeDatabase");
         FilePath tableDefCsv = null;
         
         try
         {
-            Database.createTables(tableDefCsv);
+            Database.initializeDatabase();
         }
         catch(SQLException e)
         {
             fail("Message: "+e.getMessage()+" Error Code: "+e.getErrorCode()+" SQL State: "+e.getSQLState());
         }
-
+        
     }
+    
 }

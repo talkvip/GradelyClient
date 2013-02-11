@@ -40,7 +40,7 @@ public class Database {
         StringBuilder sb = new StringBuilder();
         
         //Create the Schema
-        PreparedStatement a = c.prepareStatement("CREATE SCHEMA "+org.gradely.client.config.Configuration.getInstance().getAppName());
+        PreparedStatement a = c.prepareStatement("CREATE SCHEMA "+org.gradely.client.config.Constants.appName);
                
         try
         {
@@ -53,7 +53,7 @@ public class Database {
         }
         
         //Set the Schema
-        PreparedStatement b = c.prepareStatement("SET SCHEMA "+org.gradely.client.config.Configuration.getInstance().getAppName());
+        PreparedStatement b = c.prepareStatement("SET SCHEMA "+org.gradely.client.config.Constants.appName);
                
         try
         {

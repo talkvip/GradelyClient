@@ -30,11 +30,13 @@ public class Configuration implements Configurable {
     
     //----------------- app name -------------------------------
     //name of the application, no spaces, all lower case.
+    /* Moved to Constants
     private final String appName = "gradely";
     private final String formalAppName = "Gradely";
+    */
     
     //----------------- config file -------------------------------
-    private final String configurationFileName = appName+".props";// = appName + ".props";
+    private final String configurationFileName = Constants.appName+".props";// = appName + ".props";
     //has read from the harddrive yet?
     private boolean hasRead = false;
     
@@ -319,20 +321,6 @@ public class Configuration implements Configurable {
      */
     public OperatingSystemEnum getOs() {
         return os;
-    }
-
-    /**
-     * @return the appName
-     */
-    public String getAppName() {
-        return appName;
-    }
-
-    /**
-     * @return the formalAppName
-     */
-    public String getFormalAppName() {
-        return formalAppName;
     }
 
     /**

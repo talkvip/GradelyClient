@@ -213,7 +213,7 @@ public class Defaults {
      */
     public static String defaultDatabaseUsername()
     {
-        return Configuration.getInstance().getAppName()+"user";
+        return Constants.appName+"user";
     }
     
     /**

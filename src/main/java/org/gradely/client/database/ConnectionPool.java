@@ -1,5 +1,6 @@
 package org.gradely.client.database;
 
+import com.sun.org.apache.bcel.internal.Constants;
 import java.io.File;
 import org.gradely.client.config.Configuration;
 import java.sql.Connection;
@@ -40,7 +41,7 @@ public class ConnectionPool {
         maxConnections = config.getMaxDatabaseConnections();
         user = config.getDatabaseUser();
         password = config.getDatabasePassword();
-        databaseName = config.getAppName();
+        databaseName = org.gradely.client.config.Constants.appName;
         databaseLocation = new FilePath(config.getDatabaseLocation());
     }
 

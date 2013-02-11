@@ -35,6 +35,9 @@ public class Logging {
      */
     private static void write(String output)
     {
+        //Let's send it to the console too
+        System.out.print(output);
+        
         String fileLocation  = Configuration.getInstance().getLogFilePath();
         try
         {
@@ -56,7 +59,7 @@ public class Logging {
                 }
                 catch(IOException ea)
                 {
-                    //TODO notify user that the log file cannot be created.
+                    System.out.print("LOGGING ERROR: The log file cannot be created. To fix, make shure this program has read and write access to: "+logFile.getAbsolutePath());
                 }
             }
             
@@ -71,14 +74,14 @@ public class Logging {
                 }
                 else
                 {
-                    //TODO notify user
+                    System.out.print("LOGGING ERROR: The log file cannot be written to. To fix, make shure this program has write access to: "+logFile.getAbsolutePath());
                 }
             }
             
             else if(!logFile.isFile())
             {
                 //Why are we writing to a folder!
-                //TODO notifiy user
+                System.out.print("LOGGING ERROR: The log file is apparently a folder. Path:"+logFile.getAbsolutePath());
             }
             
             else if(!logFile.canRead())
@@ -91,7 +94,7 @@ public class Logging {
                 }
                 else
                 {
-                    //TODO notifiy user
+                   System.out.print("LOGGING ERROR: The log file cannot be read from. To fix, make shure this program has read access to: "+logFile.getAbsolutePath());
                 }
             }
         }
@@ -107,7 +110,7 @@ public class Logging {
     {
         StringBuilder sb = new StringBuilder();
         
-        sb.append(level.toString() + "/r/n");
+        sb.append(level.toString());
         
         //Get the current Time
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
