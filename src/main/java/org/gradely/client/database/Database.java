@@ -25,8 +25,10 @@ public class Database {
 
     //================= Methods ================================
     
+    
+    
     /**
-     * Gets the database ready to be written and read from. 
+     * Gets the database ready to be written and read from. Also creates the database. 
      * 
      * <ul>
      * <li>Creates a database Schema</li>
@@ -36,6 +38,16 @@ public class Database {
      */
     public static void initializeDatabase() throws ConnectionException, SQLException
     {
+        //Create the Database
+        try
+        {
+            ConnectionPool.getInstance().createDatabase();      
+        }
+        catch(ClassNotFoundException |IllegalAccessException|InstantiationException|SQLException e)
+        {
+            Logging.warning("Cannot create the database.", e);
+        }
+        
         Connection c = ConnectionPool.getInstance().waitForConnection();
         StringBuilder sb = new StringBuilder();
         
@@ -92,6 +104,7 @@ public class Database {
             sb.append(")");
 
             PreparedStatement s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE site_user");
             s.execute();
             sb = new StringBuilder();
             
@@ -106,6 +119,7 @@ public class Database {
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE user_email");
             s.execute();
             sb = new StringBuilder();
 
@@ -119,6 +133,7 @@ public class Database {
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE school");
             s.execute();
             sb = new StringBuilder();
 
@@ -135,6 +150,7 @@ public class Database {
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE class");
             s.execute();
             sb = new StringBuilder();
 
@@ -149,6 +165,7 @@ public class Database {
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE user_classes");
             s.execute();
             sb = new StringBuilder();
 
@@ -158,12 +175,13 @@ public class Database {
             sb.append("name VARCHAR(200), ");
             sb.append("class_id INT, ");
             sb.append("due_date TIMESTAMP, ");
-            sb.append("description VARCHAR, ");
+            sb.append("description VARCHAR(32000), ");
             sb.append("PRIMARY KEY (id), ");
             sb.append("FOREIGN KEY (class_id) REFERENCES class(id)");
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE assignment");
             s.execute();
             sb = new StringBuilder();
 
@@ -177,9 +195,23 @@ public class Database {
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE file_resource");
             s.execute();
             sb = new StringBuilder();
 
+            //user_file
+            sb.append("CREATE TABLE user_file ( ");
+            sb.append("id INT NOT NULL GENERATED ALWAYS AS IDENTITY, ");
+            sb.append("user_id INT, ");
+            sb.append("PRIMARY KEY (id), ");
+            sb.append("FOREIGN KEY (user_id) REFERENCES site_user(id)");
+            sb.append(")");
+            
+            s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE user_file");
+            s.execute();
+            sb = new StringBuilder();
+            
             //user_file_version
             sb.append("CREATE TABLE user_file_version (");
             sb.append("id INT NOT NULL GENERATED ALWAYS AS IDENTITY, ");
@@ -200,18 +232,7 @@ public class Database {
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
-            s.execute();
-            sb = new StringBuilder();
-
-            //user_file
-            sb.append("CREATE TABLE user_file ( ");
-            sb.append("id INT NOT NULL GENERATED ALWAYS AS IDENTITY, ");
-            sb.append("user_id INT, ");
-            sb.append("PRIMARY KEY (id), ");
-            sb.append("FOREIGN KEY (user_id) REFERENCES site_user(id)");
-            sb.append(")");
-            
-            s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE user_file_version");
             s.execute();
             sb = new StringBuilder();
 
@@ -229,6 +250,7 @@ public class Database {
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE returned_assignment");
             s.execute();
             sb = new StringBuilder();
 
@@ -243,6 +265,7 @@ public class Database {
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE user_schools");
             s.execute();
             sb = new StringBuilder();
 
@@ -255,6 +278,7 @@ public class Database {
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE school_file");
             s.execute();
             sb = new StringBuilder();
 
@@ -267,11 +291,12 @@ public class Database {
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE class_file");
             s.execute();
             sb = new StringBuilder();
 
             //group
-            sb.append("CREATE TABLE group (");
+            sb.append("CREATE TABLE user_group (");
             sb.append("id INT NOT NULL GENERATED ALWAYS AS IDENTITY, ");
             sb.append("assignment_id INT, ");
             sb.append("PRIMARY KEY (id), ");
@@ -279,6 +304,7 @@ public class Database {
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE group");
             s.execute();
             sb = new StringBuilder();
 
@@ -288,11 +314,12 @@ public class Database {
             sb.append("user_id INT, ");
             sb.append("group_id INT, ");
             sb.append("PRIMARY KEY (id), ");
-            sb.append("FOREIGN KEY (group_id) REFERENCES group(id) ,");
+            sb.append("FOREIGN KEY (group_id) REFERENCES user_group(id) ,");
             sb.append("FOREIGN KEY (user_id) REFERENCES site_user(id) ");
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE group_members");
             s.execute();
             sb = new StringBuilder();
 
@@ -307,6 +334,7 @@ public class Database {
             sb.append(")");
             
             s = c.prepareStatement(sb.toString());
+            System.out.println("CREATE TABLE shared_file");
             s.execute();
 
         }
@@ -315,10 +343,51 @@ public class Database {
             Logging.warning("Executing CREATE TABLES SQL statement threw an error.", e);
             throw e;
         }
+        finally
+        {
+            ConnectionPool.getInstance().returnConnection(c);
+        }
         
-        ConnectionPool.getInstance().returnConnection(c);
+        
         
     }
+    
+//    /**
+//     * Sets all the database functions the program will need to function.
+//     */
+//    public static void createFunctions() throws ConnectionException, SQLException{
+//        
+//        Connection c = ConnectionPool.getInstance().waitForConnection();
+//        StringBuilder sb = new StringBuilder();
+//        
+//        try
+//        {
+//            //Get renamed files FileChange.isRenamed()
+//            sb.append("");
+//            sb.append("");
+//            sb.append("");
+//            sb.append("");
+//            sb.append("");
+//            sb.append("");
+//            sb.append("");
+//            sb.append("");
+//
+//            PreparedStatement s = c.prepareStatement(sb.toString());
+//            s.execute();
+//            sb = new StringBuilder();
+//        
+//        }
+//        catch (SQLException e)
+//        {
+//            Logging.warning("Unable to create database functions.", e);
+//        }
+//        finally
+//        {
+//            ConnectionPool.getInstance().returnConnection(c);
+//        }
+//        
+//        
+//    }
     
     //------------------ Getters and Setters -------------------
 }

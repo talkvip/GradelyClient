@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Properties;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
+import org.gradely.client.logging.Logging;
 
 /**
  * This configuration singleton class gets, contains, and writes, all of the possible application configuration values.
@@ -165,7 +166,14 @@ public class Configuration implements Configurable {
         
         Properties p = propertiesFromConfiguration();
 
-        OutputStream outstr = new FileOutputStream(Defaults.defaultConfigurationFile(), false); //false id for don't append
+        File configFileLocation = Defaults.defaultConfigurationFile();
+        if (configFileLocation.exists() == false)
+        {
+           configFileLocation.mkdirs();
+           configFileLocation.createNewFile();
+        }
+        
+        OutputStream outstr = new FileOutputStream(Defaults.defaultConfigurationFile(), false); //false is for don't append
         
         //Let us write a time stamp out for fun.
         Calendar cal = Calendar.getInstance();
@@ -182,38 +190,46 @@ public class Configuration implements Configurable {
      */
     private void propertiesToConfiguration(Properties p)
     {
-        //application
-        setFirstRun(booleanFromString(p.getProperty("isfirstrun")));
-        
-        //os
-        setOs(OperatingSystemEnum.valueOf(p.getProperty("os")));
-        
-        //app name
-        //Configuration.setAppName(p.getProperty("appName"));
-        //setFormalAppName(p.getProperty("formalAppName"));
-        
-        //config file
-        //setConfigurationFileName(p.getProperty("configurationFileName"));
-        
-        //Database
-        setDatabaseUser(p.getProperty("databaseUser"));
-        setDatabasePassword(p.getProperty("databasePassword"));
-        setMaxDatabaseConnections(Integer.parseInt(p.getProperty("maxDatabaseConnections")));
-        setDatabaseLocation(p.getProperty("databaseLocation"));
-        //setDatabaseDefinitionLocation(p.getProperty("databaseDefinitionLocation"));
-        
-        
-        //directory locations
-        setInstallDirectory(p.getProperty("installDirectory"));
-        setRootDirecory(p.getProperty("rootDirecory"));
-        setUserAppsDirectory(p.getProperty("userAppsDirectory"));
-        setBoxFolderDirectory(p.getProperty("boxFolderDirectory"));
-        setUserProfileDirectory(p.getProperty("userProfileDirectory"));
-        setLogFilePath(p.getProperty("logFilePath"));
-        
-        //network
-        setServerName(p.getProperty("serverName"));
-        //setUploadChunkSize(Integer.parseInt(p.getProperty("uploadChunkSize")));
+        try
+        {
+            //application
+            setFirstRun(booleanFromString(p.getProperty("isfirstrun", "false")));
+
+            //os
+            setOs(OperatingSystemEnum.valueOf(p.getProperty("os", Defaults.defaultOperatingSystem().toString())));
+
+            //app name
+            //Configuration.setAppName(p.getProperty("appName"));
+            //setFormalAppName(p.getProperty("formalAppName"));
+
+            //config file
+            //setConfigurationFileName(p.getProperty("configurationFileName"));
+
+            //Database
+            setDatabaseUser(p.getProperty("databaseUser", Defaults.defaultDatabaseUsername()));
+            setDatabasePassword(p.getProperty("databasePassword", Defaults.defaultDatabasePassword()));
+            setMaxDatabaseConnections(Integer.parseInt(p.getProperty("maxDatabaseConnections", Integer.toString(Defaults.defaultMaxDatabaseConnection()))));
+            setDatabaseLocation(p.getProperty("databaseLocation", Defaults.defaultDatabaseLocation()));
+            //setDatabaseDefinitionLocation(p.getProperty("databaseDefinitionLocation"));
+
+
+            //directory locations
+            setInstallDirectory(p.getProperty("installDirectory"));
+            setRootDirecory(p.getProperty("rootDirecory", Defaults.defaultRootDirectory()));
+            setUserAppsDirectory(p.getProperty("userAppsDirectory", Defaults.defaultUserAppsDirectory().getAbsolutePath()));
+            setBoxFolderDirectory(p.getProperty("boxFolderDirectory", Defaults.defaultUserAppsDirectory().getAbsolutePath()));
+            setUserProfileDirectory(p.getProperty("userProfileDirectory", System.getProperty("user.home")));
+            setLogFilePath(p.getProperty("logFilePath", Defaults.defaultLogFilePath()));
+
+            //network
+            setServerName(p.getProperty("serverName"));
+            //setUploadChunkSize(Integer.parseInt(p.getProperty("uploadChunkSize")));
+
+        }
+        catch (Exception e)
+        {
+            Logging.info("Was not able to read in a property.", e);
+        }
         
     }
     
@@ -225,40 +241,66 @@ public class Configuration implements Configurable {
     {
         Properties p = new Properties();
         
-        //application
-        p.setProperty("isfirstrun", booleanToString(isFirstRun()));
-        
-        //os
-        p.setProperty("os", getOs().name());
-        
-        //app name MOVED TO CONSTANTS
-        //p.setProperty("appName", getAppName());
-        //p.setProperty("formalAppName", getFormalAppName());
-        
-        //config file
-        //p.setProperty("configurationFileName", getConfigurationFileName());
-        
-        //database
-        p.setProperty("databaseUser", getDatabaseUser());
-        p.setProperty("databasePassword", getDatabasePassword());
-        p.setProperty("maxDatabaseConnections",Integer.toString(getMaxDatabaseConnections()));
-        p.setProperty("databaseLocation", getDatabaseLocation());
-        //p.getProperty("databaseDefinitionLocation", getDatabaseDefinitionLocation());
-        
-        //directory locations
-        p.setProperty("installDirectory", getInstallDirectory());
-        p.setProperty("rootDirecory", getRootDirecory());
-        p.setProperty("userAppsDirectory", getUserAppsDirectory());
-        p.setProperty("boxFolderDirectory", getBoxFolderDirectory());
-        p.setProperty("userProfileDirectory", getUserProfileDirectory());
-        p.setProperty("logFilePath",getLogFilePath());
-        
-        //network
-        p.setProperty("serverName", getServerName());
-        //p.setProperty("uploadChunkSize", Long.toString(getUploadChunkSize()));
+        try
+        {
+            //application
+            p = setProperty("isfirstrun", booleanToString(isFirstRun()),p);
+
+            //os
+            p = setProperty("os", getOs().name(),p);
+
+            //app name MOVED TO CONSTANTS
+            //p.setProperty("appName", getAppName());
+            //p.setProperty("formalAppName", getFormalAppName());
+
+            //config file
+            //p.setProperty("configurationFileName", getConfigurationFileName());
+
+            //database
+            p = setProperty("databaseUser", getDatabaseUser(),p);
+            p = setProperty("databasePassword", getDatabasePassword(),p);
+            p = setProperty("maxDatabaseConnections",Integer.toString(getMaxDatabaseConnections()),p);
+            p = setProperty("databaseLocation", getDatabaseLocation(),p);
+            //p.getProperty("databaseDefinitionLocation", getDatabaseDefinitionLocation());
+
+            //directory locations
+            p = setProperty("installDirectory", getInstallDirectory(),p);
+            p = setProperty("rootDirecory", getRootDirecory(),p);
+            p = setProperty("userAppsDirectory", getUserAppsDirectory(),p);
+            p = setProperty("boxFolderDirectory", getBoxFolderDirectory(),p);
+            p = setProperty("userProfileDirectory", getUserProfileDirectory(),p);
+            p = setProperty("logFilePath",getLogFilePath(),p);
+
+            //network
+            p = setProperty("serverName", getServerName(),p);
+            //p.setProperty("uploadChunkSize", Long.toString(getUploadChunkSize()));
+        }
+        catch (Exception e)
+        {
+            Logging.info("Was not able to write a property.", e);
+        }
         
         return p;
         
+    }
+    
+    /**
+     * Sets the Property for writing to file. Contains logic to deal with null values, so there are no NullPointerExceptions thrown.
+     * @return the same Properties p, but with a new key-value.
+     */
+    public Properties setProperty(String key, String value, Properties p)
+    {
+        if (value == null)
+        {
+            //If this is not here the program will throw a NullPointerException
+            return p;
+        }
+        else
+        {
+            p.setProperty(key, value);
+        }
+        
+        return p;
     }
     
     /**
@@ -283,6 +325,11 @@ public class Configuration implements Configurable {
      */
     public boolean booleanFromString(String s)
     {
+        if(s == null)
+        {
+            return false;
+        }
+        
         s = s.toLowerCase();
         
         if (s.contains("true"))
@@ -306,7 +353,6 @@ public class Configuration implements Configurable {
   
     
     
-    
     //---------------- Getters and Setters ---------------------------
 
     /**
@@ -320,6 +366,12 @@ public class Configuration implements Configurable {
      * @return the os
      */
     public OperatingSystemEnum getOs() {
+        
+        if (os == null)
+        {
+            os = Defaults.defaultOperatingSystem();
+        }
+        
         return os;
     }
 

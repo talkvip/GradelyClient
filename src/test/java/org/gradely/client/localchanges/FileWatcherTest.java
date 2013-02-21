@@ -2,23 +2,23 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.gradely.client.gui.settings;
+package org.gradely.client.localchanges;
 
-import org.gradely.client.gui.PanelAbstractClass;
+import org.gradely.client.FileLocationEnum;
+import org.gradely.client.FilePath;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author Matt
  */
-public class SettingsDialogTest {
+public class FileWatcherTest {
     
-    public SettingsDialogTest() {
+    public FileWatcherTest() {
     }
     
     @BeforeClass
@@ -38,16 +38,16 @@ public class SettingsDialogTest {
     }
 
     /**
-     * Test of init method, of class SettingsDialog.
+     * Test of start method, of class FileWatcher.
      */
     @Test
-    public void testInit() throws Exception {
-        System.out.println("init");
-        SettingsDialog instance = new SettingsDialog();
-        instance.init();
-        Thread.sleep(10000);
-        //Does it display correctly?
-
+    public void testStart() throws Exception {
+        System.out.println("start");
+        FileWatcher instance = new FileWatcher(new FilePath("",FileLocationEnum.USERPROFILE));
+        instance.start();
+        //If it starts, good enough for me!
+        instance.stop();
+        //If it stops, that's good too.
     }
 
 }

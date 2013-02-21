@@ -10,6 +10,7 @@ import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
@@ -21,6 +22,7 @@ import org.gradely.client.FileLocationEnum;
 import org.gradely.client.FilePath;
 import org.gradely.client.gui.PanelAbstractClass;
 import org.gradely.client.gui.UserPanel;
+import org.gradely.client.logging.Logging;
 
 /**
  * Displays the Main Settings Window and all that other junk.
@@ -30,30 +32,40 @@ public class SettingsDialog {
 
     //================= Fields =================================
     
+    private static JFrame omnies;
+    private static JLabel topImage;
+    private static JTree left; //Ha! Left Field. Take me out to the ball game...
+    private static JScrollPane leftScroll;
+    private static JSplitPane splitter;
+    private static PanelAbstractClass right;
+    private static JPanel buttons;
+    
     //================= Constructors ===========================
 
-    public SettingsDialog() {
+    //private SettingsDialog() {
 
-    }
+    //}
 
     //================= Methods ================================
     
     /**
      * Actually displays the settings window.
      */
-    public void init() {
+    public static void init() {
         //Whole Frame
-        JFrame omnies = new JFrame(org.gradely.client.config.Constants.formalAppName);
+        //======================================================================================
+        omnies = new JFrame(org.gradely.client.config.Constants.formalAppName);
         
         //Top Side 
-        JLabel topImage = new javax.swing.JLabel();
+        //======================================================================================
+        topImage = new javax.swing.JLabel();
         topImage.setText("");
         topImage.setIcon(new ImageIcon(new FilePath("icons/settings-top.png", FileLocationEnum.INSTALL).getAbsolutePath()));
         
         
         //JTree left side settings selector 
         //======================================================================================
-        JTree left = new JTree(settingsPanels());
+        left = new JTree(settingsPanels());
         left.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); // Allows for only one tree item to be selected at a time
         left.addTreeSelectionListener(null);
         left.setCellRenderer(new SettingsTreeCellRenderer());
@@ -67,18 +79,21 @@ public class SettingsDialog {
         //Right Side
         //=====================================================================================
         //To create the right side we load a JPanel from elsewhere
-        PanelAbstractClass right = new UserPanel();
-        right.loadForms();
+        right = new UserPanel();
+        getRight().loadForms();
 
         
         //We need a Scroll Panel for the left side
         //======================================================================================
-        JScrollPane leftScroll = new JScrollPane();
+        leftScroll = new JScrollPane();
         
         //Need a split panel to seperate the left and right sides
         //======================================================================================
-        JSplitPane splitter = new JSplitPane();
+        splitter = new JSplitPane();
         
+        //Buttons on the bottom
+        //======================================================================================
+        buttons = new BottomButtons();
         
         //Put it all togeather
         //======================================================================================
@@ -95,7 +110,7 @@ public class SettingsDialog {
             .addGap(0, 365, Short.MAX_VALUE)
         );
 
-        splitter.setRightComponent(omnies);
+        splitter.setRightComponent(getRight());
 
         leftScroll.setViewportView(left);
 
@@ -103,21 +118,36 @@ public class SettingsDialog {
 
         javax.swing.GroupLayout subLayout = new javax.swing.GroupLayout(omnies.getContentPane()); //omnies?
         omnies.getContentPane().setLayout(subLayout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        subLayout.setHorizontalGroup(
+            subLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(topImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(buttons, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(splitter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        subLayout.setVerticalGroup(
+            subLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(subLayout.createSequentialGroup()
                 .addComponent(topImage, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(splitter))
-        );
+                .addComponent(splitter)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        ));
 
+        //Clean up
+        //=======================================================================================
         omnies.pack();
+        
         omnies.setVisible(true);
+        topImage.setVisible(true);
+        leftScroll.setVisible(true);
+        left.setVisible(true);
+        splitter.setVisible(true);
+        getRight().setVisible(true);
+        buttons.setVisible(true);
+        
+        //Set fields
+        //========================================================================================
 
     }
     
@@ -125,7 +155,7 @@ public class SettingsDialog {
      * Creates a tree model for the left side options and selectors. Each option of the tree corisponds with a JPanel
      * @return a mutable tree node for a JTree
      */
-    private MutableTreeNode settingsPanels()
+    private static MutableTreeNode settingsPanels()
     {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         
@@ -151,6 +181,13 @@ public class SettingsDialog {
         
         return root;
     }
+
+    /**
+     * @return the right
+     */
+    public static PanelAbstractClass getRight() {
+        return right;
+    }
     
     
     
@@ -158,7 +195,7 @@ public class SettingsDialog {
     * This renders the left-side tree into the appropriate form.
     * @see http://download.oracle.com/javase/tutorial/uiswing/examples/components/TreeIconDemo2Project/src/components/TreeIconDemo2.java
     */
-    private class SettingsTreeCellRenderer extends DefaultTreeCellRenderer {
+    private static class SettingsTreeCellRenderer extends DefaultTreeCellRenderer {
 
         public SettingsTreeCellRenderer() {
             super();
@@ -191,11 +228,39 @@ public class SettingsDialog {
     
     /**
      * Replaces the right side panel with a new panel. 
-     * @param panel 
+     * @param panel the panel the will be displayed on the right
      */
     public static void changeRightPanel(PanelAbstractClass panel)
     {
-        //TODO changeRightPanel
+        
+        if(panel == null)
+        {
+            Logging.info("Someone passed in a null PanelAbstractClass! Argggg!");
+            panel =  (PanelAbstractClass) new JPanel();
+        }
+        
+        right = panel;
+        panel.setVisible(true);
+        omnies.revalidate();
+        omnies.repaint();
+    }
+    
+    /**
+     * Gets rid of the settings dialog
+     */
+    public static void close()
+    {
+        omnies.setVisible(false);
+        omnies.dispose();
+        omnies = null;
+        
+        topImage = null;
+        left = null;
+        leftScroll = null;
+        splitter = null;
+        right = null;
+        buttons = null;
+
     }
 
     

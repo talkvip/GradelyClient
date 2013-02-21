@@ -79,8 +79,6 @@ public class FilePath {
         return fileObj.isDirectory();
     }
     
-    
-    
     /**
      * Gets the absolute path that this object represents.
      * @return A string represeting the absolute path usable by Java's file methods.
@@ -98,6 +96,24 @@ public class FilePath {
     public File getFileObject() {
         return fileObj;
     } 
+    
+    
+    /**
+     * For comparisons with other filepaths.
+     * @param e 
+     */
+    public boolean equals(FilePath other)
+    {
+        String o = other.getAbsolutePath().toLowerCase();
+        String t = this.getAbsolutePath().toLowerCase();
+        
+        if (o == t)
+        {
+            return true;
+        }
+        
+        return false;
+    }
     
     //------------------ Getters and Setters -------------------
 

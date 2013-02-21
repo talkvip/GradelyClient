@@ -1,11 +1,20 @@
 package org.gradely.client.localchanges;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent.Kind;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import org.gradely.client.FilePath;
-import org.gradely.client.FilePath;
+import org.gradely.client.Hashsum;
+import org.gradely.client.database.ConnectionException;
+import org.gradely.client.database.ConnectionPool;
+import org.gradely.client.logging.Logging;
 
 /**
  * This class handles the file changes. Create Database entry get file from server, finish database entry.
@@ -75,12 +84,20 @@ public class FileChange {
         }
         
         //Is it a rename?
-        BooleanFilepathChecksum bf = isRenamed(changedFile);
-        if (bf.isRenamed())
+        try
         {
-            fileRename(changedFile,bf.getFilepath(),bf.getChecksum());
+            BooleanFilepathChecksum bf = isRenamed(changedFile);
+            if (bf.isRenamed())
+            {
+                fileRename(changedFile,bf.getFilepath(),bf.getChecksum());
+            }
+        }
+        catch (IOException | SQLException ex)
+        {
+            Logging.warning("isRename threw an error.", ex);
         }
 
+        fileCreate(changedFile);
         
     }
     
@@ -92,6 +109,10 @@ public class FileChange {
     public static void fileCreate(FilePath createdFile)
     {
         //Collect metadata 
+            //Calculate chacksum
+        //String hashsum = Hashsum.computeHash(createdFile);
+        
+        
         //Send metadata to server
         //Parse server's response
         //upload, (or don't upload) the file to the server.
@@ -149,23 +170,69 @@ public class FileChange {
      * @param renamed
      * @return 
      */
-    public static BooleanFilepathChecksum isRenamed(FilePath created)
+    public static BooleanFilepathChecksum isRenamed(FilePath created) throws IOException, SQLException
     {
         //Ok, to determine if a file is renamed
         //find a previous version of the file in the database that was deleted, or is about to be deleted, that has the same hash sum
         //put the two trains togeather.
         
-        //calculate check sum
+        try
+        {
+            //Check the in-memory store
+            if (recentlyRenamed.contains(created))
+            {
+                return new BooleanFilepathChecksum(true, created, Hashsum.computeHash(created));
+            }
+
+            //calculate check sum
+            String hashsum = Hashsum.computeHash(created);
+
+            //query database to see if check sum exists
+            Connection c  = ConnectionPool.getInstance().waitForConnection();
+            //This command gets all file ids where the hashsum = the hashsum and it is a current version. 
+            
+            String sql = "SELECT filepath, is_current, is_deleted FROM user_file_version JOIN file_resource ON user_file_version.user_file_id = file_resource.id WHERE file_resource.hashsum = "+hashsum;
+            Statement s = c.createStatement();
+            ResultSet r = s.executeQuery(hashsum);
+            r.first();
+            
+            if (r.first())
+            {
+                //There is a current file with that hashsum
+                //if check sum is in database:
+                //if file is marked as deleted, it is a rename - return true.
+                    //If we get this far it is deleted
+                return new BooleanFilepathChecksum(false, new FilePath(r.getString("filepath")), hashsum);
+                
+                
+                //if file was deleted recently (within a min. or so) it is a rename.
+                
+            }
+            else
+            {
+                //if check sum is not in database, return false - not a rename.
+                return new BooleanFilepathChecksum(false, null, hashsum);
+            }
+            
+            
+            //if check sum is in database:
+            //if file is marked as deleted, it is a rename - return true.
+            //if file was deleted recently (within a min. or so) it is a rename.
+            //check to see if file exists on file system
+            //If file does exist - it is a copy'd file, return false.
+            //If file does not exist, it is a rename, return true.
         
-        //query database to see if check sum exists
-        //if check sum is not in database, return false - not a rename.
-        //if check sum is in database:
-        //if file is marked as deleted, it is a rename - return true.
-        //if file was deleted recently (within a min. or so) it is a rename.
-        //check to see if file exists on file system
-        //If file does exist - it is a copy'd file, return false.
-        //If file does not exist, it is a rename, return true.
-        
+        }
+        catch (NoSuchAlgorithmException | IOException e)
+        {
+            Logging.error("Seems the file does not exist.", e);
+            throw new IOException(e.getMessage());
+        }
+        catch (ConnectionException e)
+        {
+            Logging.fatal("Can't get a connection with the database.");
+        }
+            
         return new BooleanFilepathChecksum(false,null,null);
     }
     

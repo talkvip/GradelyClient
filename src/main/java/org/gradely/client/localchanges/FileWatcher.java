@@ -7,6 +7,7 @@
 package org.gradely.client.localchanges;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -15,9 +16,6 @@ import java.nio.file.WatchService;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchEvent;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 import org.gradely.client.FileLocationEnum;
 import org.gradely.client.FilePath;
 
@@ -53,14 +51,14 @@ public class FileWatcher {
         //Figure out where the watcher watches.
         Path dir = Paths.get(watchDir.getAbsolutePath());
         
-        FileSystem filesystem = FileSystems.newFileSystem(dir, null);
+        FileSystem filesystem = dir.getFileSystem(); //FileSystems.newFileSystem(dir, null);
         WatchService watcher = filesystem.newWatchService();
         
         dir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE, 
            StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
         
         
-        while (true) {
+        //while (true) {
             // retrieve key
             WatchKey key = watcher.take();
 
@@ -92,15 +90,16 @@ public class FileWatcher {
             if (!valid) {
                 // object no longer registered, we are no longer watching the file system.
                 //TODO: something to tell the rest of the program that we are no longer watching.
-                break;
+               // break;
             }
 
             if (stop == true)
             {
                 //looks like we no longer want to watch the file.
-                break;
+                //break;
             }
-        }
+            
+        //}
     }
     
     /**

@@ -5,7 +5,7 @@ import org.gradely.client.config.Configuration;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.Scanner;
+import java.sql.SQLException;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
@@ -14,7 +14,13 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.ParseException;
 import org.gradely.client.database.ConnectionException;
 import org.gradely.client.database.ConnectionPool;
+import org.gradely.client.database.Database;
 import org.gradely.client.database.OutOfConnectionsException;
+import org.gradely.client.gui.tray.SystemTray;
+import org.gradely.client.gui.wizards.InstallWizardProgression;
+import org.gradely.client.gui.wizards.WizardDialog;
+import org.gradely.client.localchanges.FileComparer;
+import org.gradely.client.localchanges.FileWatcher;
 import org.gradely.client.logging.Logging;
 
 /**
@@ -52,10 +58,12 @@ public class Client {
             
             if (cl.hasOption("firstrun")) {
                 //Run the firstrun install utility
-                //Run it
-                //Make shure the config file is written
+                firstrun();
                 
                 //restart the program
+                main(new String[0]);
+                
+                System.exit(0);
                 
             }
 
@@ -113,26 +121,90 @@ public class Client {
         }
 
         //--------------------------------------------------------
-        //Take an initial tally of the file system with the FileComparer class
-        //TODO
-        
-        //--------------------------------------------------------
         //Launch the system tray
         //TODO
+        SystemTray.init();
         
-        
+        //--------------------------------------------------------
+        //Take an initial tally of the file system with the FileComparer class
+        //TODO
+        FileComparer.compare(new FilePath(Configuration.getInstance().getBoxFolderDirectory()));
+
         //--------------------------------------------------------
         //Start watching the file system for changes.
         //TODO
+        
+        
+        Thread watchThread = new Thread() {
+            
+            @Override
+            public void run()
+            {
+                FileWatcher allSeeing = new FileWatcher(new FilePath("", FileLocationEnum.BOXFOLDER));
+                try
+                {
+                    allSeeing.start();
+                }
+                catch(IOException|InterruptedException e)
+                {
+                    Logging.fatal("Cannot start the file watcher!", e);
+                    System.console().readLine("Press enter to close this program.");
+                    System.exit(1);
+                }
+            }
+            
+        };
+        
+        watchThread.start();
+        
 
         //--------------------------------------------------------
         //Start listening to the remote server for changes
         //TODO
         
-
-        
     }
     
 
+    /**
+     * This runs whenever a first run is needed. (Generally right after instalation)
+     */
+    public static void firstrun()
+    {
+        //Set up database
+        //--------------------------------------------------------
+        try
+        {
+            Database.initializeDatabase();
+        }
+        catch (ConnectionException | SQLException e)
+        {
+            Logging.fatal("Cannot Create the database!",e);
+            System.console().readLine("Press enter to close this program.");
+            System.exit(1);
+        }
+        
+        //Run the install wizard
+        //--------------------------------------------------------
+        WizardDialog radagast = new WizardDialog(new InstallWizardProgression());
+        radagast.init();
+        
+        radagast.dispose();
+
+        //Set up config file
+        try
+        {
+            Configuration c = Configuration.getInstance();
+            c.setFirstRun(false);
+            c.save();
+        }
+        catch(IOException e)
+        {
+            Logging.fatal("Cannot save to the configuration file. Your work may not be saved.", e);
+            System.console().readLine("Press enter to close this program.");
+            System.exit(1);
+        }
+            
+        
+    }
 
 }

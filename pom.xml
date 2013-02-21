@@ -147,7 +147,7 @@
     </dependency>
 
     <dependency>
-        <!-- Needed for SAMBA Syncany File Transfer Plugin -->
+        <!-- Needed for the SAMBA Syncany File Transfer Plugin -->
         <!-- Also needed for S3 syncany file transfer plugin -->
         <!-- Also needed for rest syncany file transfer plugin. (MAN! this is used for lots of stuff!) -->
 	<groupId>jcifs</groupId>
@@ -156,17 +156,25 @@
     </dependency>
     
     <dependency>
-        <!-- Needed for gs (Google Storage) Syncany file transfer plugin -->
+        <!-- Needed for the gs (Google Storage) Syncany file transfer plugin -->
 	<groupId>net.java.dev.jets3t</groupId>
 	<artifactId>jets3t</artifactId>
 	<version>0.9.0</version>
     </dependency>
     
     <dependency>
-        <!-- needed for FTP Syncany file transfer plugin -->
+        <!-- needed for the FTP Syncany file transfer plugin -->
 	<groupId>commons-net</groupId>
 	<artifactId>commons-net</artifactId>
 	<version>3.2</version>
+    </dependency>
+    
+    <dependency>
+        <!-- used to make the tray icon look all pretty on linux systems using GTK 2 or greater -->
+        <!-- Turns out the Java implememtation of the system is really bad on linux -->
+        <groupId>com.github.taksan</groupId>
+	<artifactId>native-tray-adapter</artifactId>
+        <version>1.1</version>
     </dependency>
     
   </dependencies>
