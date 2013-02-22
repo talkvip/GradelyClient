@@ -40,6 +40,8 @@ public class Client {
         //--------------------------------------------------------
         //First thing we need to do is figure out the configuration
 
+        System.out.println("Welcome to "+org.gradely.client.config.Constants.formalAppName+".");
+        
         try
         {
             Options options = new Options();
@@ -155,7 +157,9 @@ public class Client {
             
         };
         
+        watchThread.setName("Gradely FileWatcher Thread");
         watchThread.start();
+        
         
 
         //--------------------------------------------------------

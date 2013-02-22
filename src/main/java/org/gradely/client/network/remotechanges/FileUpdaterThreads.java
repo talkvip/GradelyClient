@@ -30,6 +30,7 @@ public class FileUpdaterThreads {
         public void run(){
             
             FileUpdater.createFile();
+            this.setName("Gradely File Create");
             
         }
         
@@ -45,6 +46,7 @@ public class FileUpdaterThreads {
         public void run(){
             
             FileUpdater.deleteFile();
+            this.setName("Gradely File Delete");
             
         }
     }
@@ -58,6 +60,7 @@ public class FileUpdaterThreads {
         public void run(){
             
             FileUpdater.modifyFile();
+            this.setName("Gradely File Modify");
             
         }
     }
@@ -72,6 +75,7 @@ public class FileUpdaterThreads {
         public void run(){
             
             FileUpdater.renameFile();
+            this.setName("Gradely File Rename");
             
         }
     }
@@ -85,6 +89,7 @@ public class FileUpdaterThreads {
         public void run(){
             
             FileUpdater.restoreFile();
+            this.setName("Gradely File Restore");
             
         }
     }

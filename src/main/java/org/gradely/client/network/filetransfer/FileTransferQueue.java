@@ -25,6 +25,7 @@ public class FileTransferQueue{
 
         for (int i=0; i<nThreads; i++) {
             threads[i] = new PoolWorker();
+            threads[i].setName("Gradely FileTransferQueue Worker "+i);
             threads[i].start();
         }
     }

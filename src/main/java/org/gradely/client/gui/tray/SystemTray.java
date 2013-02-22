@@ -46,7 +46,8 @@ public class SystemTray {
         try
         {
             SystemTrayAdapter trayAdapter = new SystemTrayProvider().getSystemTray();
-            URL imageUrl = getImageUrl();  
+            URL imageUrl = getImageUrl(); 
+            //Logging.debug("Tray Icon Location: "+imageUrl.getFile().toString());
             String tooltip = org.gradely.client.config.Constants.formalAppName;   
             PopupMenu popup = getPopupMenu();  
             trayIconAdapter = trayAdapter.createAndAddTrayIcon(imageUrl,tooltip,popup); 
@@ -65,30 +66,30 @@ public class SystemTray {
      */
     public static URL getImageUrl() throws MalformedURLException
     {
-        try
-        {
+        //try
+        //{
             if (currentStatus == IconStatusEnum.SYNCED)
             {
-                return new URL("file://"+new FilePath("/icons/synced.png", FileLocationEnum.INSTALL).getAbsolutePath());
+                return org.gradely.client.config.Configuration.getInstance().getClass().getResource("icons/ok.svg");
             }
             else if (currentStatus == IconStatusEnum.SYNCING)
             {
-                return new URL("file://"+new FilePath("/icons/syncing.png", FileLocationEnum.INSTALL).getAbsolutePath());
+                return org.gradely.client.config.Configuration.getInstance().getClass().getResource("icons/syncing.svg");
             }
             else if (currentStatus == IconStatusEnum.ERROR)
             {
-                return new URL("file://"+new FilePath("/icons/error.png", FileLocationEnum.INSTALL).getAbsolutePath());
+                return org.gradely.client.config.Configuration.getInstance().getClass().getResource("icons/error.svg");
             }
             else
             {
-                return new URL("file://"+new FilePath("/icons/error.png", FileLocationEnum.INSTALL).getAbsolutePath());
+                return org.gradely.client.config.Configuration.getInstance().getClass().getResource("icons/error.svg");
             }
-        }
-        catch(MalformedURLException ex)
-        {
-            Logging.warning("Cannot find a icon url. Trying to get icon "+currentStatus.name()+".",ex);
-            throw ex;
-        }
+        //}
+        //catch(MalformedURLException ex)
+        //{
+        //    Logging.warning("Cannot find a icon url. Trying to get icon "+currentStatus.name()+".",ex);
+        //    throw ex;
+        //}
 
     }
     

@@ -67,19 +67,19 @@ public class FileWatcher {
 
                    if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {
                         //Start it up.
-                        FilePath fp = new FilePath((String)event.context(),FileLocationEnum.BOXFOLDER);
+                        FilePath fp = new FilePath(event.context().toString(),FileLocationEnum.BOXFOLDER);
                         ThreadFileChangeRouter threader = new ThreadFileChangeRouter(fp,event.kind());
                         threader.start();
                    }
                    if (event.kind() == StandardWatchEventKinds.ENTRY_DELETE) {
                         //Process that change!
-                        FilePath fp = new FilePath((String)event.context(),FileLocationEnum.BOXFOLDER);
+                        FilePath fp = new FilePath(event.context().toString(),FileLocationEnum.BOXFOLDER);
                         ThreadFileChangeRouter threader = new ThreadFileChangeRouter(fp,event.kind());
                         threader.start();
                    }
                    if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY) {
                         //Yaaa, that's right, send that modification to the server!
-                        FilePath fp = new FilePath((String)event.context(),FileLocationEnum.BOXFOLDER);
+                        FilePath fp = new FilePath(event.context().toString(),FileLocationEnum.BOXFOLDER);
                         ThreadFileChangeRouter threader = new ThreadFileChangeRouter(fp,event.kind());
                         threader.start();
                    }

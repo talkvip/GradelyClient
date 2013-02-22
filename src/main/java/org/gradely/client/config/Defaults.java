@@ -58,32 +58,35 @@ public class Defaults {
      */
     public static String defaultRootDirectory()
     {
+
         OperatingSystemEnum os = defaultOperatingSystem();
         
         if(os == OperatingSystemEnum.WINDOWS)
         {
-            File f = new File(System.getProperty("user.home"));
-            
-            int i = 0;
-            while (true)
-            {
-               String s = f.getParent();
-               if (s == null)
-               {
-                   return  f.getAbsolutePath();
-               }
-               else
-               {
-                   f = new File(f.getParent());
-               }
-               
-               if(1 >= 100)
-               {
-                   return "C:/";
-               }
-               
-               i = i+1;
-            }
+            return "C:/";
+// This was supposed to find the root programatically, but it won't retirn the drive letter.            
+//            File f = new File(System.getProperty("user.home"));
+//            
+//            int i = 0;
+//            while (true)
+//            {
+//               String s = f.getParent();
+//               if (s == null)
+//               {
+//                   return  f.getAbsolutePath();
+//               }
+//               else
+//               {
+//                   f = new File(f.getParent());
+//               }
+//               
+//               if(1 >= 100)
+//               {
+//                   return "C:/";
+//               }
+//               
+//               i = i+1;
+//            }
         }
         else 
         {
