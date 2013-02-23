@@ -206,17 +206,31 @@ public class ConnectionPool {
      */
     private Connection createConnection() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException
     {
-        //Is the database even running?
-        if (isStarted == false)
-        {
-            startUp();
-        }
 
-        File databasePath = new File(databaseLocation.getAbsolutePath(),databaseName);
+        try
+        {
+            File databasePath = new File(databaseLocation.getAbsolutePath(),databaseName);
+
+            Connection conn = DriverManager.getConnection("jdbc:derby:"+databasePath.getAbsolutePath(), user, password); 
+
+            return conn;
+        }
+        catch(SQLException e)
+        {
+            if (isStarted == false)
+            {
+                //Is the database even running?
+                startUp();
+                return createConnection();
+            }
+            else
+            {
+                throw e;
+            }
+
+        }
         
-        Connection conn = DriverManager.getConnection("jdbc:derby:"+databasePath.getAbsolutePath(), user, password); 
         
-        return conn;
 
     }
     

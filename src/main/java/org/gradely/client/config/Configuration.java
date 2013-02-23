@@ -225,7 +225,7 @@ public class Configuration implements Configurable {
             setInstallDirectory(p.getProperty("installDirectory"));
             setRootDirecory(p.getProperty("rootDirecory", Defaults.defaultRootDirectory()));
             setUserAppsDirectory(p.getProperty("userAppsDirectory", Defaults.defaultUserAppsDirectory().getAbsolutePath()));
-            setBoxFolderDirectory(p.getProperty("boxFolderDirectory", Defaults.defaultUserAppsDirectory().getAbsolutePath()));
+            setBoxFolderDirectory(p.getProperty("boxFolderDirectory", Defaults.defaultUserBoxDirectory().getAbsolutePath()));
             setUserProfileDirectory(p.getProperty("userProfileDirectory", System.getProperty("user.home")));
             setLogFilePath(p.getProperty("logFilePath", Defaults.defaultLogFilePath()));
 
@@ -479,6 +479,12 @@ public class Configuration implements Configurable {
      * @return the boxFolderDirectory
      */
     public String getBoxFolderDirectory() {
+        
+        if(boxFolderDirectory == null)
+        {
+           boxFolderDirectory = Defaults.defaultUserBoxDirectory().getAbsolutePath(); 
+        }
+        
         return boxFolderDirectory;
     }
 

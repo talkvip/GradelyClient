@@ -4,6 +4,13 @@
  */
 package org.gradely.client.gui;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import org.gradely.client.Hashsum;
+import org.gradely.client.config.Configuration;
+import org.gradely.client.logging.Logging;
+
 /**
  *
  * @author Matt
@@ -16,16 +23,69 @@ public class UserPanel extends PanelAbstractClass {
     @Override
     public void loadForms()
     {
-        //TODO
+        Configuration c = org.gradely.client.config.Configuration.getInstance(); 
+        jTextField1.setText(c.getServerName());
+        jTextField1.setText(c.getUsername());
     }
     
     /**
      * From PanelAbstractClass. Saves values from forms.
      */
     @Override
-    public void saveForms()
+    public void saveForms() throws NoSuchAlgorithmException, UnsupportedEncodingException
     {
-        //TODO
+        Configuration c = org.gradely.client.config.Configuration.getInstance(); 
+       
+        //Password
+        char[] passwordArr = jPasswordField2.getPassword();
+        StringBuilder sb = new StringBuilder();
+        sb.append(passwordArr);
+        String password = sb.toString();
+        password = password.trim();
+        
+        if(org.apache.commons.lang3.StringUtils.isNotBlank(password))
+        {
+            try
+            {
+                byte[] hashPassArr = Hashsum.computeHash(password);
+                String hashPass = Hashsum.bytesToHex(hashPassArr);
+
+                if(hashPass == null ? c.getPasswordHash() != null : !hashPass.equals(c.getPasswordHash()))
+                {
+                    c.setPasswordHash(hashPass);
+                }
+            }
+            catch(NoSuchAlgorithmException |UnsupportedEncodingException e)
+            {
+                Logging.warning("Cannot compute the hash of the password.", e);
+                throw e;
+            }
+        }
+        
+        //Username
+        String username = jTextField2.getText();
+        if (username == null ? c.getUsername() == null : !username.equals(c.getUsername()))
+        {
+            c.setUsername(username);
+        }
+        
+        //Domain name
+        String domain = jTextField1.getText();
+        if (domain == null ? c.getServerName() == null : !domain.equals(c.getServerName()))
+        {
+            c.setServerName(domain);
+        }
+        
+        try
+        {
+            c.save();
+        }
+        catch(IOException e)
+        {
+            Logging.warning("Cannot save the configuration", e);
+        }
+        
+        
     }
     
     /**
@@ -49,8 +109,6 @@ public class UserPanel extends PanelAbstractClass {
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
         jPasswordField2 = new javax.swing.JPasswordField();
 
         jLabel1.setText("Server Domain Name");
@@ -63,8 +121,6 @@ public class UserPanel extends PanelAbstractClass {
 
         jLabel3.setText("Password");
 
-        jLabel4.setText("Confirm Password");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -72,7 +128,6 @@ public class UserPanel extends PanelAbstractClass {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
                     .addComponent(jLabel1))
@@ -80,7 +135,6 @@ public class UserPanel extends PanelAbstractClass {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jTextField2)
                     .addComponent(jPasswordField2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
                 .addContainerGap(175, Short.MAX_VALUE))
         );
@@ -99,19 +153,13 @@ public class UserPanel extends PanelAbstractClass {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;

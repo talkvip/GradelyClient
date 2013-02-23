@@ -63,6 +63,7 @@ public class Defaults {
         
         if(os == OperatingSystemEnum.WINDOWS)
         {
+            //TODO
             return "C:/";
 // This was supposed to find the root programatically, but it won't retirn the drive letter.            
 //            File f = new File(System.getProperty("user.home"));
@@ -228,4 +229,14 @@ public class Defaults {
         return "8dj4jd7y4nsdu95";
     }
 
+    /**
+     * the default user box directory.
+     * @return User/appname
+     */
+    public static File defaultUserBoxDirectory()
+    {
+        File f = new File(System.getProperty("user.home"),Constants.appName);
+        
+        return f;
+    }
 }

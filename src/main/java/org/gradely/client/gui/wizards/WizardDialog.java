@@ -5,7 +5,10 @@
 
 package org.gradely.client.gui.wizards;
 
+import javax.swing.ImageIcon;
+import org.gradely.client.gui.GuiUtilities;
 import org.gradely.client.gui.PanelAbstractClass;
+import org.gradely.client.gui.errors.ErrorPrompt;
 import org.gradely.client.logging.Logging;
 
 /**
@@ -30,12 +33,19 @@ public class WizardDialog {
     //================= Methods ================================
     
     public void init(){
+
+        //Set Look and Feel
+        GuiUtilities.setLookAndFeel();
+        
         omnies = new javax.swing.JFrame();
         left = new javax.swing.JLabel();
         right = gandolf.getNextPanel();
         buttons = new javax.swing.JPanel();
 
         omnies.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        //Set icon
+        ImageIcon icon = new ImageIcon(org.gradely.client.config.Configuration.class.getResource("logo.png"));
+        omnies.setIconImage(icon.getImage());
 
         javax.swing.GroupLayout rightLayout = new javax.swing.GroupLayout(right);
         right.setLayout(rightLayout);
@@ -114,6 +124,7 @@ public class WizardDialog {
          * Creates new form WizardButtons
          */
         public WizardButtons(WizardDialog wd) {
+
             initComponents();
         }
 
@@ -197,7 +208,15 @@ public class WizardDialog {
         private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
             // TODO add your handling code here:
             //Save the form
-            WizardDialog.this.right.saveForms();
+            try
+            {
+                WizardDialog.this.right.saveForms();
+            }
+            catch(Exception e)
+            {
+                Logging.warning("The JPanel cannot be saved.", e);
+                ErrorPrompt.init("Your settings could not be saved. (Message: "+e.getMessage()+")");
+            }
             
             //Load the next form
             try
@@ -278,7 +297,17 @@ public class WizardDialog {
          */
         private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
             // Save the page
-            WizardDialog.this.right.saveForms();
+            
+            try
+            {
+                WizardDialog.this.right.saveForms();
+            }
+            catch(Exception e)
+            {
+                Logging.warning("The JPanel cannot be saved.", e);
+                ErrorPrompt.init("Your settings could not be saved. (Message: "+e.getMessage()+")");
+            }
+            
             
             // Get rid of it
             WizardDialog.this.dispose();
