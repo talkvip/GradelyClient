@@ -76,7 +76,7 @@ public class SettingsDialog {
         //======================================================================================
         topImage = new javax.swing.JLabel();
         topImage.setText("");
-        topImage.setIcon(new ImageIcon(new FilePath("icons/settings-top.png", FileLocationEnum.INSTALL).getAbsolutePath()));
+        topImage.setIcon(new ImageIcon(org.gradely.client.config.Configuration.class.getResource("icons/textlogo.png")));
         
         
         //JTree left side settings selector 

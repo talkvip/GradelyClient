@@ -1,6 +1,7 @@
 
 package org.gradely.client;
 
+import java.io.File;
 import org.gradely.client.config.Configuration;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -135,7 +136,12 @@ public class Client {
         //--------------------------------------------------------
         //Start watching the file system for changes.
         //TODO
-        
+        File box = new File(Configuration.getInstance().getBoxFolderDirectory());
+        if(!(box.exists()))
+        {
+            Logging.info("The box folder does not exist. Creating a new box folder.");
+            box.mkdirs();
+        }
         
         Thread watchThread = new Thread() {
             
