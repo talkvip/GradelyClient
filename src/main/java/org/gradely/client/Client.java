@@ -210,5 +210,14 @@ public class Client {
             
         
     }
+    
+    /**
+     * Performs a graceful shutdown of the program.
+     */
+    public static void shutdown()
+    {
+        System.exit(0);
+    }
+    
 
 }

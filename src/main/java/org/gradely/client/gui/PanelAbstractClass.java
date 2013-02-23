@@ -16,7 +16,7 @@ public abstract class PanelAbstractClass extends JPanel {
     /**
      * Takes user-inputted form information and saves it. Probably saves it to the Configuration Object, which saves the config to disk.
      */
-    public abstract void saveForms();
+    public abstract void saveForms() throws Exception;
     
     /**
      * Loads appropriate values into the forms. Called when we want to display the JPanel.

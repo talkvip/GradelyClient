@@ -18,6 +18,7 @@
 package org.gradely.client.gui.settings;
 
 import org.gradely.client.FilePath;
+import org.gradely.client.gui.PanelAbstractClass;
 
 /**
  * This class represents a item in the left-hand part of the main SettingsDialog. Used to create the TreeNodes as TreeNodes take user-created arguments in their constructor. 
@@ -34,10 +35,16 @@ public class TreeItem {
      * The path to the icon displayed next to the text.
      */
     private FilePath iconFilePath;
+    
+    /**
+     * The panel that should appear when this entry is clicked.
+     */
+    private PanelAbstractClass associatedPanel;
 
-    public TreeItem(String description, FilePath iconFilePath) {
+    public TreeItem(String description, FilePath iconFilePath, PanelAbstractClass associatedPanel) {
         this.description = description;
         this.iconFilePath = iconFilePath;
+        this.associatedPanel = associatedPanel;
     }
 
     public String getDescription() {
@@ -55,6 +62,13 @@ public class TreeItem {
     @Override
     public String toString() {
         return description;
+    }
+
+    /**
+     * @return the associatedPanel
+     */
+    public PanelAbstractClass getAssociatedPanel() {
+        return associatedPanel;
     }
 
 }

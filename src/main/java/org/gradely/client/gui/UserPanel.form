@@ -17,21 +17,19 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jTextField1" min="-2" max="-2" attributes="0"/>
-                  <Component id="jPasswordField2" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jPasswordField1" max="32767" attributes="0"/>
-                      <Component id="jTextField2" max="32767" attributes="0"/>
-                  </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Component id="jTextField2" max="32767" attributes="0"/>
+                  <Component id="jPasswordField2" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jPasswordField1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jTextField1" pref="111" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="175" max="32767" attributes="0"/>
           </Group>
@@ -78,12 +76,16 @@
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField1"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="org.gradely.client.config.Configuration.getInstance().getServerName()" type="code"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField2"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="org.gradely.client.config.Configuration.getInstance().getUsername()" type="code"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
@@ -97,14 +99,8 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="jPasswordField1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="jPasswordField2">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jPasswordField2"/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>

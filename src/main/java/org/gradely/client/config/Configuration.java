@@ -41,6 +41,10 @@ public class Configuration implements Configurable {
     //has read from the harddrive yet?
     private boolean hasRead = false;
     
+    //----------------- user -----------------------------------
+    private String username;
+    private String passwordHash;
+    
     //----------------- Database -------------------------------
     private int maxDatabaseConnections; //Must be non-zero in order to connect to the database. // = 8;
     private String databasePassword; // = "";
@@ -205,6 +209,10 @@ public class Configuration implements Configurable {
             //config file
             //setConfigurationFileName(p.getProperty("configurationFileName"));
 
+            //user
+            setUsername(p.getProperty("username", ""));
+            setPasswordHash(p.getProperty("passwordHash", ""));
+            
             //Database
             setDatabaseUser(p.getProperty("databaseUser", Defaults.defaultDatabaseUsername()));
             setDatabasePassword(p.getProperty("databasePassword", Defaults.defaultDatabasePassword()));
@@ -256,6 +264,11 @@ public class Configuration implements Configurable {
             //config file
             //p.setProperty("configurationFileName", getConfigurationFileName());
 
+            //user
+            p = setProperty("username", getUsername(),p);
+            p = setProperty("passwordHash", getPasswordHash(),p);
+            
+            
             //database
             p = setProperty("databaseUser", getDatabaseUser(),p);
             p = setProperty("databasePassword", getDatabasePassword(),p);
@@ -580,6 +593,34 @@ public class Configuration implements Configurable {
      */
     public void setDatabaseLocation(String databaseLocation) {
         this.databaseLocation = databaseLocation;
+    }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @return the passwordHash
+     */
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * @param passwordHash the passwordHash to set
+     */
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
   
 

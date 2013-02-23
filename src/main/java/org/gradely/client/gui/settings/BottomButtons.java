@@ -4,6 +4,8 @@
  */
 package org.gradely.client.gui.settings;
 
+import org.gradely.client.logging.Logging;
+
 /**
  * This class represents the bottom button in the SettingsDialog that saves the right-side JPanels form information.
  * @author Matt
@@ -93,7 +95,15 @@ public class BottomButtons extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //Save the Right Side
-        SettingsDialog.getRight().saveForms();
+        try
+        {
+            SettingsDialog.getRight().saveForms();
+        }
+        catch (Exception e)
+        {
+           jLabel1.setText("Error! Cannot be saved! (Message: "+e.getMessage()+")");
+           Logging.warning("There was an issue saving the form. Form = "+SettingsDialog.getRight().toString(), e); 
+        }
         
         //Set jLabel1 to say "Saved" in order to inform the user
         jLabel1.setText("Saved");

@@ -16,7 +16,7 @@ public class UserPanel extends PanelAbstractClass {
     @Override
     public void loadForms()
     {
-        
+        //TODO
     }
     
     /**
@@ -25,7 +25,7 @@ public class UserPanel extends PanelAbstractClass {
     @Override
     public void saveForms()
     {
-        
+        //TODO
     }
     
     /**
@@ -57,17 +57,13 @@ public class UserPanel extends PanelAbstractClass {
 
         jLabel2.setText("Username");
 
-        jTextField1.setText("jTextField1");
+        jTextField1.setText(org.gradely.client.config.Configuration.getInstance().getServerName());
 
-        jTextField2.setText("jTextField2");
+        jTextField2.setText(org.gradely.client.config.Configuration.getInstance().getUsername());
 
         jLabel3.setText("Password");
 
         jLabel4.setText("Confirm Password");
-
-        jPasswordField1.setText("jPasswordField1");
-
-        jPasswordField2.setText("jPasswordField2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -81,12 +77,11 @@ public class UserPanel extends PanelAbstractClass {
                     .addComponent(jLabel3)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPasswordField1)
-                        .addComponent(jTextField2)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jTextField2)
+                    .addComponent(jPasswordField2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
                 .addContainerGap(175, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(

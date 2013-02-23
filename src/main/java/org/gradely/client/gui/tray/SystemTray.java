@@ -113,6 +113,12 @@ public class SystemTray {
         mi2.addActionListener(new WebsiteActionListener());
         p.add(mi2);
         
+        MenuItem mi3 = new MenuItem();
+        mi3.setLabel("Exit");
+        mi3.setEnabled(true);
+        mi3.addActionListener(new ExitActionListener());
+        p.add(mi3);
+        
         return p;
         
     }
@@ -147,6 +153,22 @@ public class SystemTray {
         public void actionPerformed(ActionEvent e)
         {
             //TODO
+        }
+    }
+    
+    /**
+     * Does a nice, simple shutdown of the program.
+     */
+    public static class ExitActionListener implements ActionListener
+    {
+         /**
+         * Fires whenever the user wants to exit the program.
+         * @param e 
+         */
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            org.gradely.client.Client.shutdown();
         }
     }
     
