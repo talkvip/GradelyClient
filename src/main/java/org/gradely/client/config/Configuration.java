@@ -222,7 +222,7 @@ public class Configuration implements Configurable {
 
 
             //directory locations
-            setInstallDirectory(p.getProperty("installDirectory"));
+            setInstallDirectory(p.getProperty("installDirectory", Defaults.defaultInstallPath()));
             setRootDirecory(p.getProperty("rootDirecory", Defaults.defaultRootDirectory()));
             setUserAppsDirectory(p.getProperty("userAppsDirectory", Defaults.defaultUserAppsDirectory().getAbsolutePath()));
             setBoxFolderDirectory(p.getProperty("boxFolderDirectory", Defaults.defaultUserBoxDirectory().getAbsolutePath()));
@@ -412,6 +412,12 @@ public class Configuration implements Configurable {
      * @return the databasePassword
      */
     public String getDatabasePassword() {
+        
+        if (databasePassword == null)
+        {
+            databasePassword = Defaults.defaultDatabasePassword();
+        }
+        
         return databasePassword;
     }
 
@@ -419,6 +425,12 @@ public class Configuration implements Configurable {
      * @return the databaseUser
      */
     public String getDatabaseUser() {
+        
+        if(databaseUser == null)
+        {
+            databaseUser = Defaults.defaultDatabaseUsername();
+        }
+        
         return databaseUser;
     }
 
@@ -472,6 +484,12 @@ public class Configuration implements Configurable {
      * @return the installDirectory
      */
     public String getInstallDirectory() {
+        
+        if(installDirectory == null)
+        {
+           installDirectory = Defaults.defaultInstallPath();
+        }
+        
         return installDirectory;
     }
 

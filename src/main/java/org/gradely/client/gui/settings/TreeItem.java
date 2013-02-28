@@ -17,6 +17,7 @@
  */
 package org.gradely.client.gui.settings;
 
+import java.net.URL;
 import org.gradely.client.FilePath;
 import org.gradely.client.gui.PanelAbstractClass;
 
@@ -34,14 +35,14 @@ public class TreeItem {
     /**
      * The path to the icon displayed next to the text.
      */
-    private FilePath iconFilePath;
+    private URL iconFilePath;
     
     /**
      * The panel that should appear when this entry is clicked.
      */
     private PanelAbstractClass associatedPanel;
 
-    public TreeItem(String description, FilePath iconFilePath, PanelAbstractClass associatedPanel) {
+    public TreeItem(String description, URL iconFilePath, PanelAbstractClass associatedPanel) {
         this.description = description;
         this.iconFilePath = iconFilePath;
         this.associatedPanel = associatedPanel;
@@ -55,7 +56,7 @@ public class TreeItem {
     this.description = description;
     }        
 
-    public FilePath getIconFilePath() {
+    public URL getIconFilePath() {
         return iconFilePath;
     }
 

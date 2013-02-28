@@ -222,6 +222,14 @@ public class Client {
      */
     public static void shutdown()
     {
+        try
+        {
+            Configuration.getInstance().save();
+        }
+        catch(IOException e)
+        {
+            Logging.warning("config file cannot be saved.");
+        }
         System.exit(0);
     }
     

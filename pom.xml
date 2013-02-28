@@ -2,16 +2,24 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.hwdb</groupId>
-  <artifactId>ClientMaven2</artifactId>
+  <groupId>org.gradely</groupId>
+  <artifactId>GradelyClient</artifactId>
   <version>0.1</version>
   <packaging>jar</packaging>
 
-  <name>ClientMaven2</name>
+  <name>Gradely</name>
   <url>http://maven.apache.org</url>
+  
+  
+  <properties>
+    <staging.dir>${project.build.directory}/staging</staging.dir>
+    <izpack-standalone.version>4.3.1</izpack-standalone.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   
   <build>
     <plugins>
+        
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
@@ -21,12 +29,9 @@
             <target>7</target>
           </configuration>
         </plugin>
+        
     </plugins>
   </build>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
 
   <repositories>
       
@@ -175,6 +180,13 @@
         <groupId>com.github.taksan</groupId>
 	<artifactId>native-tray-adapter</artifactId>
         <version>1.1</version>
+    </dependency>
+    
+    <dependency>
+        <!-- Installer -->
+        <groupId>org.codehaus.izpack</groupId>
+        <artifactId>izpack-standalone-compiler</artifactId>
+        <version>4.3.5</version>
     </dependency>
     
   </dependencies>

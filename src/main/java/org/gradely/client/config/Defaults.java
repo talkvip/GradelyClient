@@ -53,6 +53,16 @@ public class Defaults {
     }
     
     /**
+     * Gets the location of where the .jar is running. 
+     * @return Should be the install directory.
+     */
+    public static String defaultInstallPath()
+    {
+        return Configuration.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+    }
+    
+    
+    /**
      * The operating system dependent root directory.
      * @return "C:/" on Windows, "/" on other
      */

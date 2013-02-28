@@ -7,7 +7,7 @@ package org.gradely.client.gui.settings;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Image;
+import java.net.URL;
 import java.util.LinkedList;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -24,14 +24,11 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-import org.gradely.client.FileLocationEnum;
-import org.gradely.client.FilePath;
 import org.gradely.client.gui.DirectoryPanel;
 import org.gradely.client.gui.GuiUtilities;
 import org.gradely.client.gui.PanelAbstractClass;
 import org.gradely.client.gui.UserPanel;
 import org.gradely.client.logging.Logging;
-import java.awt.Image;
 
 
 /**
@@ -76,7 +73,7 @@ public class SettingsDialog {
         //======================================================================================
         topImage = new javax.swing.JLabel();
         topImage.setText("");
-        topImage.setIcon(new ImageIcon(org.gradely.client.config.Configuration.class.getResource("icons/textlogo.png")));
+        topImage.setIcon(new ImageIcon(org.gradely.client.config.Configuration.class.getResource("icons/topbarlogo.png")));
         
         
         //JTree left side settings selector 
@@ -194,9 +191,9 @@ public class SettingsDialog {
         LinkedList<TreeItem> ll = new LinkedList<TreeItem>();
         
         //TODO icon icons/usericon.png
-        ll.add(new TreeItem("User and Server Settings", new FilePath("icons/usericon.png", FileLocationEnum.INSTALL), new UserPanel()));
+        ll.add(new TreeItem("User and Server Settings",org.gradely.client.config.Configuration.class.getResource("icons/blank.png") , new UserPanel())); //org.gradely.client.config.Configuration.class.getResource("icons/usericon.png")
         //TODO icon icons/appicon.png
-        ll.add(new TreeItem("Directory Settings", new FilePath("icons/appicon.png", FileLocationEnum.INSTALL), new DirectoryPanel()));
+        ll.add(new TreeItem("Directory Settings",org.gradely.client.config.Configuration.class.getResource("icons/blank.png") , new DirectoryPanel())); //org.gradely.client.config.Configuration.class.getResource("icons/foldericon.png")
         
         return ll;
         
@@ -242,7 +239,19 @@ public class SettingsDialog {
             
             TreeItem ti = (TreeItem)userObj;
 
-            setIcon(new ImageIcon(ti.getIconFilePath().getAbsolutePath()));
+            
+            URL url = ti.getIconFilePath();
+            
+            if(url != null)
+            {
+                ImageIcon icon  = new ImageIcon();
+
+                if (icon != null)
+                {
+                    setIcon(icon);
+                }
+            }
+            
             return this;
         }
     }
