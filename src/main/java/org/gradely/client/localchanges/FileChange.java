@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import org.gradely.client.FilePath;
-import org.gradely.client.Hashsum;
+import org.gradely.client.SHA2Hashsum;
 import org.gradely.client.database.ConnectionException;
 import org.gradely.client.database.ConnectionPool;
 import org.gradely.client.logging.Logging;
@@ -181,11 +181,11 @@ public class FileChange {
             //Check the in-memory store
             if (recentlyRenamed.contains(created))
             {
-                return new BooleanFilepathChecksum(true, created, Hashsum.computeHash(created));
+                return new BooleanFilepathChecksum(true, created, SHA2Hashsum.computeHash(created));
             }
 
             //calculate check sum
-            String hashsum = Hashsum.computeHash(created);
+            String hashsum = SHA2Hashsum.computeHash(created);
 
             //query database to see if check sum exists
             Connection c  = ConnectionPool.getInstance().waitForConnection();

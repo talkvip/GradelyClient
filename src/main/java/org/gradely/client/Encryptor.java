@@ -37,7 +37,7 @@ public class Encryptor {
     {
         try
         {
-            byte[] hash = Hashsum.computeHash(password);
+            byte[] hash = SHA2Hashsum.computeHash(password);
 
             SecretKeySpec key = new SecretKeySpec(hash, "AES");
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding", "SunJCE");
@@ -62,7 +62,7 @@ public class Encryptor {
     {
         try
         {
-            byte[] hash = Hashsum.computeHash(password);
+            byte[] hash = SHA2Hashsum.computeHash(password);
 
             //Convert the string to bytes
             byte[] crypt = decodeBase64toByte(cryptText);

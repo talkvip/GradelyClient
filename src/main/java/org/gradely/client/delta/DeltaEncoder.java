@@ -1,4 +1,4 @@
-package org.gradely.client;
+package org.gradely.client.delta;
 
 import com.nothome.delta.*;
 import java.io.DataOutputStream;
@@ -6,10 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import org.gradely.client.FilePath;
 
 /**
  * This class is responsable for generating, merging, and applying the delta compression on documents. This is a static class. 
  * @author Matt
+ * @deprecated Replaced with DeduplicationEncoder, which has the advantages of being reversible and decreases total needed storage space.
  */
 public class DeltaEncoder {
 

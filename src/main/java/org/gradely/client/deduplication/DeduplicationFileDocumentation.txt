@@ -1,0 +1,38 @@
+
+The deduplication file is a file that contains the hashes of each chunk of a file.
+
+The first entry always starts at byte 0, and the upper limit is non-inclusive (For example, a value of 500 hashes bytes 0,1,2,3,4....498,499.) 
+
+Header Data (All strings in unicode):
+
+Time of Creation \n\r
+Created From File name \n\r
+SHA256 Hashsum of File in base64 encodeing \n\r
+Previous File \n\r (optional)
+
+Unique end of header bytes 0x: b4 bc 98 34 a4 b1 ed 3c \n\r 
+
+Following this (hopefully) unique set of bytes, the chunks start.
+
+The 8 byte length is a signed integer. (Yes, I know that the signed int uses up a little more space, but it makes it easier to parse.)
+The file is written is java-standard big endian.
+Try not to put any extranious characters in the files. I
+
+This is how the file looks:
+
+--------------------------------------------------------------------------------
+                                    HEADER
+--------------------------------------------------------------------------------
+4 bytes Length of Chunk | 4 bytes Adler32 Hashsum | 32 bytes SHA2 hashsum     |
+
+4 bytes Length of Chunk | 4 bytes Adler32 Hashsum | 32 bytes SHA2 hashsum     |
+
+4 bytes Length of Chunk | 4 bytes Adler32 Hashsum | 32 bytes SHA2 hashsum     |
+
+4 bytes Length of Chunk | 4 bytes Adler32 Hashsum | 32 bytes SHA2 hashsum     |
+
+4 bytes Length of Chunk | 4 bytes Adler32 Hashsum | 32 bytes SHA2 hashsum     |
+
+--------------------------------------------------------------------------------
+
+Each chunk entry takes up 44 bytes.

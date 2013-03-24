@@ -3,19 +3,22 @@ This file explains what is in what package and some of the classes involved.
 PACKAGES
 -----------------------------------------------------------
 
-org.hwdb.client
+org.gradely.client
     - utilties shared by large sections of the program
     - the main class
 
-Config: handles the configuration of the project
+config: handles the configuration of the project
 
-Database: handles connections to the database, Apache Derby. Includes a connection pool, and other various utilties.
+database: handles connections to the database, Apache Derby. Includes a connection pool, and other various utilties.
 
-Gui: Classes that make up the graphical user interface and system tray.
+gui: Classes that make up the graphical user interface and system tray.
 
-Logging: Logs all sorts of cool stuff. Based on http://www.tinylog.org
+logging: Logs all sorts of cool stuff. Based on http://www.tinylog.org
 
 localchanges: classes in this package watch the local filesystem and then, when a change is detected, figure out how to notify everyone.
+
+deduplication: Integrated tightly with localchanges. Deals with the datadeduplication/diff files and file types. The deduplication files consist of a list of blocks of the file and their Adler32 hashsums.
+
 
 network: Takes care of contacting the Gradely custom server.
    filetransfer: Transfers (sometimes large) files up and down from remote storage. All file transfer takes place through the FileTransferQueue.

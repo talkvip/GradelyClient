@@ -31,5 +31,13 @@ public abstract class Constants {
     
     //----------------- config file -------------------------------
     public static final String configurationFileName = appName+".props";// = appName + ".props";
+    
+    //------------------ Deduplication ----------------------------
+    /**
+     * Block size for deduplication files.
+     */
+    public static final int blockSize = 1024*5; 
+    
+    public static final String dateFormat = "yyyy/MM/dd HH:mm:ss Z";
 
 }

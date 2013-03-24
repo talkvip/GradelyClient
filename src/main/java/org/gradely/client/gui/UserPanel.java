@@ -7,7 +7,7 @@ package org.gradely.client.gui;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import org.gradely.client.Hashsum;
+import org.gradely.client.SHA2Hashsum;
 import org.gradely.client.config.Configuration;
 import org.gradely.client.logging.Logging;
 
@@ -47,8 +47,8 @@ public class UserPanel extends PanelAbstractClass {
         {
             try
             {
-                byte[] hashPassArr = Hashsum.computeHash(password);
-                String hashPass = Hashsum.bytesToHex(hashPassArr);
+                byte[] hashPassArr = SHA2Hashsum.computeHash(password);
+                String hashPass = SHA2Hashsum.bytesToHex(hashPassArr);
 
                 if(hashPass == null ? c.getPasswordHash() != null : !hashPass.equals(c.getPasswordHash()))
                 {

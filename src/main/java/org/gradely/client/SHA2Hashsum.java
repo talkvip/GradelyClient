@@ -15,13 +15,13 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author Matt
  */
-public class Hashsum {
+public class SHA2Hashsum {
 
     //================= Fields =================================
     
     //================= Constructors ===========================
 
-    public Hashsum() {
+    public SHA2Hashsum() {
 
     }
 
@@ -36,6 +36,25 @@ public class Hashsum {
      * @throws IOException Thrown if something goes wrong with reading the file.
      */
     public static String computeHash(FilePath filepath) throws NoSuchAlgorithmException, FileNotFoundException, IOException
+    {
+        byte[] hashArr = computeHashBytes(filepath);
+        
+        //Convert hashArr to Hex
+        String hashStr = bytesToHex(hashArr);
+        
+        return hashStr.toLowerCase();
+    }
+    
+    
+    /**
+     * Computes the SHA2 hashsum on a file and returns the ray bytes output by the SHA2 algorthem.
+     * @param filepath The file to hash
+     * @return 32 bytes of the SHA2 hashsum
+     * @throws NoSuchAlgorithmException If sha 256 is not valis
+     * @throws FileNotFoundException If the file cannot be found.
+     * @throws IOException If something goes wrong reading the file.
+     */
+    public static byte[] computeHashBytes(FilePath filepath) throws NoSuchAlgorithmException, FileNotFoundException, IOException
     {
         //Get the file 
         
@@ -62,13 +81,11 @@ public class Hashsum {
         }
 
         //digest finishes the task and spits out the hash
-        byte[] hashArr = md.digest();
+        //byte[] hashArr = md.digest();
         
-        //Convert hashArr to Hex
-        String hashStr = bytesToHex(hashArr);
-        
-        return hashStr.toLowerCase();
+        return md.digest();
     }
+    
     
      /**
      * For small strings, like passwords
@@ -84,6 +101,19 @@ public class Hashsum {
             return hash;
     }
     
+    /**
+     * Computes the SHA2 hash on an array of bytes.
+     * @param input The byte array to hash.
+     * @return A byte array containing the raw output of the hash.
+     */
+    public static byte[] computeHash(byte[] input) throws NoSuchAlgorithmException
+    {
+         //Start by taking the sha256 hash
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(input);
+            byte[] hash = md.digest();
+            return hash;
+    }
     
     /**
      * From maybeWeCouldStealAVan at http://stackoverflow.com. Converts a byte array to hexidecimal.
