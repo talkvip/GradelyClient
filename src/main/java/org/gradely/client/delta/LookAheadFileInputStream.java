@@ -22,6 +22,8 @@ public class LookAheadFileInputStream {
     private int bufferLocation;
     private int endOfBuffer;
     
+    private long location = 0;
+    
     private FilePath file; 
     
     /**
@@ -56,7 +58,8 @@ public class LookAheadFileInputStream {
      */
     public void skip(long n) throws IOException
     {
-        fileStream.skip(n); 
+        fileStream.skip(n);
+        location = location+n;
         
     }
     
@@ -84,9 +87,10 @@ public class LookAheadFileInputStream {
      */
     public boolean hasMoreData()
     {
+        
         if(fileReadsOutOfData == true)
         {
-            if(outOfData == true)
+            if(bufferLocation > endOfBuffer)
             {
                 return false;
             }
@@ -119,6 +123,7 @@ public class LookAheadFileInputStream {
         
         bufferLocation = bufferLocation+1;
         
+        location = location+1;
         return rodger;
         
     }
@@ -141,4 +146,13 @@ public class LookAheadFileInputStream {
     }
     
     //------------------ Getters and Setters -------------------
+
+    /**
+     * @return the location
+     */
+    public long getLocation() {
+        return location;
+    }
+
+
 }

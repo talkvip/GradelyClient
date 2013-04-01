@@ -109,7 +109,7 @@ public class Logging {
     private static void format(LoggingLevel level, String message, Throwable e)
     {
         StringBuilder sb = new StringBuilder();
-        
+        sb.append("============================================================ \r\n");
         sb.append(level.toString());
         
         //Get the current Time

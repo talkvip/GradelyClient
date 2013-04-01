@@ -6,7 +6,7 @@
 package org.gradely.client.delta;
 
 /**
- * Describes a single diff entry/operation
+ * Describes a single diff entry/operation. These operations are written to the diff files.
  */
 public class DiffOperation
 {

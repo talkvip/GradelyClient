@@ -33,6 +33,11 @@ public class RDiffReader {
         boolean isValidated = validate();
         hasMagicNumbers = isValidated;
         
+        if(!diffFile.fileExists())
+        {
+            throw new FileNotFoundException("The diff file does not exist.");
+        }
+        
         if(isValidated == false)
         {
             throw new MalformedFileException("The file did not have the appropriate magic numbers at the top of the file. This file is either corrupt or not a diff file.");
@@ -59,15 +64,18 @@ public class RDiffReader {
         magicJohnson[7] = (byte)0xb9;
         
         byte[] test = new byte[8];
-        int bytesRead = input.read(test);
+        input.read(test);
         
-        if(test == magicJohnson)
+        if(areArraysEqual(test,magicJohnson))
         {
             return true;
         }
         else
         {
+            
+            Logging.info("Magic numbers are not equal. Length:"+test.length+" toString: "+test.toString());
             return false;
+            
         }
         
     }
@@ -128,6 +136,31 @@ public class RDiffReader {
         
         return op;
         
+    }
+    
+    /**
+     * Check each value of the array
+     * @param one
+     * @param two
+     * @return True if the arrays are equal
+     */
+    private static boolean areArraysEqual(byte[] one, byte[] two)
+    {
+        
+        if(one.length != two.length)
+        {
+            return false;
+        }
+        
+        for(int i=0; i<one.length; i++)
+        {
+            if(one[i] != two[i])
+            {
+                return false;
+            }
+        }
+        
+        return true;
     }
     
     

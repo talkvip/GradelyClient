@@ -47,12 +47,22 @@ public class RDiffEncoderTest {
     {
         FilePath parent = new FilePath("/desktop/parent.doc",FileLocationEnum.USERPROFILE);
         FilePath child = new FilePath("/desktop/child.doc",FileLocationEnum.USERPROFILE);
-        FilePath target = new FilePath("/desktop/delta.dif",FileLocationEnum.USERPROFILE);
+        FilePath diffFile = new FilePath("/desktop/delta.dif",FileLocationEnum.USERPROFILE);
         FilePath newFile = new FilePath("/desktop/reconstitutedParent.doc",FileLocationEnum.USERPROFILE);
         
-        RDiffEncoder.generateDelta(parent, child, target);
+        RDiffEncoder.generateDelta(parent, child, diffFile);
         
-        RDiffDecoder.add(parent, target, target);
+        RDiffDecoder.add(parent, diffFile, newFile);
+        
+        if(!newFile.fileExists())
+        {
+            throw new Exception("New file was not created.");
+        }
+        
+        if(!diffFile.fileExists())
+        {
+            throw new Exception("The diff file does not exist.");
+        }
 
     }
     

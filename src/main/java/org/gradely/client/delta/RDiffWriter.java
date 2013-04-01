@@ -26,7 +26,14 @@ public class RDiffWriter {
 
     public RDiffWriter(FilePath target) throws FileNotFoundException, IOException {
         
+        if(!target.fileExists())
+        {
+            target.getFileObject().createNewFile();
+        }
+        
         output = new DataOutputStream(new FileOutputStream(target.getFileObject())); 
+        
+        
         
         startFile();
 
