@@ -1,0 +1,1 @@
+This folder is in order to create classes using jooq's libary. This must be updated whenever the database scheme is changed.

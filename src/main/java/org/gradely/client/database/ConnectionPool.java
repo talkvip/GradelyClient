@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.util.ArrayList;
 import org.gradely.client.FilePath;
 import org.gradely.client.logging.Logging;
+import org.jooq.impl.Factory;
 
 /**
  * The connection pool gets and returns database connections, allowing for reuse. This class is a singleton.
@@ -123,6 +124,25 @@ public class ConnectionPool {
     }
     
     /**
+     * Gets a Jooq factory with a valid connection.
+     * @return a jooq object for creating sql statements.
+     * @throws ConnectionException Thrown if the connection cannot be found.
+     */
+    public Factory getJooqFactory() throws ConnectionException
+    {
+        return new Factory(waitForConnection(), org.jooq.SQLDialect.DERBY);
+    }
+    
+    /**
+     * Returns the jooq factory and connection back to the connection pool.
+     * @param f the factory to return
+     */
+    public void returnJooqFactory(Factory f)
+    {
+        returnConnection(f.getConnection());
+    }
+    
+    /**
      * Determines if the connection has expired or otherwise gone moldy.
      * @param c the connection to validate.
      * @return true if the connection is good, connected, and valid false otherwise.
@@ -212,7 +232,8 @@ public class ConnectionPool {
             File databasePath = new File(databaseLocation.getAbsolutePath(),databaseName);
 
             Connection conn = DriverManager.getConnection("jdbc:derby:"+databasePath.getAbsolutePath(), user, password); 
-
+            System.out.println(conn);
+            
             return conn;
         }
         catch(SQLException e)

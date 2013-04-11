@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Sun Mar 31 18:34:46 MDT 2013:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-013d-c304-8591-000000bb5aa0 
-on database directory C:\Users\Matt\AppData\Roaming\Gradely\database\gradely  with class loader sun.misc.Launcher$AppClassLoader@16930e2 
+Wed Apr 10 17:40:50 MDT 2013:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-013d-f652-bf33-000000ba5de8 
+on database directory C:\Users\Matt\AppData\Roaming\Gradely\database\gradely  with class loader sun.misc.Launcher$AppClassLoader@108786b 
 Loaded from file:/C:/Users/Matt/.m2/repository/org/apache/derby/derby/10.9.1.0/derby-10.9.1.0.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.7.0_07-b11

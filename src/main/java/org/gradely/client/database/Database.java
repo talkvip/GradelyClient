@@ -1,13 +1,10 @@
 package org.gradely.client.database;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import org.gradely.client.FilePath;
 import org.gradely.client.logging.Logging;
+import org.jooq.impl.Factory;
 
 /**
  *
@@ -24,6 +21,8 @@ public class Database {
     }
 
     //================= Methods ================================
+    
+
     
     
     

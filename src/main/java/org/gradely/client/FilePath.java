@@ -2,6 +2,9 @@ package org.gradely.client;
 
 import org.gradely.client.config.Configuration;
 import java.io.File;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Represents a file path. This class takes care of realtive paths, and that directories are correct.
@@ -15,6 +18,7 @@ public class FilePath {
     private FileLocationEnum baseDirectory;
     private File fileObj;
     
+    
     //================= Constructors ===========================
 
     /**
@@ -27,24 +31,11 @@ public class FilePath {
         this.filePath = filePath;
         this.baseDirectory = baseDirectory;
         
-        
         String firstPart = "/";
         
-        Configuration config = Configuration.getInstance();
-        
-        switch (baseDirectory){
-
-            case ROOT: firstPart = config.getRootDirecory(); break;
-            case USERPROFILE: firstPart = config.getUserProfileDirectory(); break;
-            case USERAPPS: firstPart = config.getUserAppsDirectory(); break;
-            case INSTALL: firstPart = config.getInstallDirectory(); break;
-            case BOXFOLDER: firstPart = config.getBoxFolderDirectory(); break;
-            
-        }
+       firstPart = resolveEnumValue(baseDirectory);
         
        this.fileObj = new File(firstPart, filePath);
-       
-       
 
     }
     
@@ -60,6 +51,51 @@ public class FilePath {
     }
 
     //================= Methods ================================
+    
+    /**
+     * Turns the enum into the appropriate file path.
+     * @param fle BoxFolder, InstallFolder, ect.
+     * @return string
+     */
+    private static String resolveEnumValue(FileLocationEnum baseDirectory)
+    {
+        String firstPart = "";
+        
+        Configuration config = Configuration.getInstance();
+        
+        switch (baseDirectory){
+
+            case ROOT: firstPart = config.getRootDirecory(); break;
+            case USERPROFILE: firstPart = config.getUserProfileDirectory(); break;
+            case USERAPPS: firstPart = config.getUserAppsDirectory(); break;
+            case INSTALL: firstPart = config.getInstallDirectory(); break;
+            case BOXFOLDER: firstPart = config.getBoxFolderDirectory(); break;
+            
+        }
+        
+        return firstPart;
+    }
+    
+    /**
+     * Figures out what the lower, realtive path is to the enum folder.
+     * @return 
+     */
+    public String getLowerPart()
+    {
+        return new File(resolveEnumValue(baseDirectory)).toURI().relativize(fileObj.toURI()).getPath();
+    }
+    
+    /**
+     * Turns the File object long time representation into human readable time.
+     */
+    public String getTimeModified()
+    {
+        long time = fileObj.lastModified();
+        
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat(org.gradely.client.config.Constants.dateFormat);
+        return format.format(date).toString();
+    }
     
     /**
      * Figures out if the file exists or not. Returns true if it is a directory or file.

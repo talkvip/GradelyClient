@@ -97,6 +97,13 @@
     </dependency>
     
     <dependency>
+        <!-- database tools -->
+	<groupId>org.jooq</groupId>
+	<artifactId>jooq</artifactId>
+	<version>2.6.3</version>
+    </dependency>
+    
+    <dependency>
 	<groupId>org.apache.httpcomponents</groupId>
 	<artifactId>httpclient</artifactId>
 	<version>4.2.3</version>
@@ -138,10 +145,17 @@
 	<version>1.7</version>
     </dependency>
     
-    <dependency>
+    <!--<dependency>
 	<groupId>com.googlecode.json-simple </groupId>
 	<artifactId>json-simple</artifactId>
 	<version>1.1.1</version>
+    </dependency>-->
+    
+    <dependency>
+        <!-- json parser-->
+	<groupId>org.codehaus.jackson</groupId>
+	<artifactId>jackson-mapper-asl</artifactId>
+	<version>1.9.12</version>
     </dependency>
     
     <dependency>
@@ -187,6 +201,15 @@
         <groupId>org.codehaus.izpack</groupId>
         <artifactId>izpack-standalone-compiler</artifactId>
         <version>4.3.5</version>
+    </dependency>
+    
+    <dependency>
+        <!-- Date chooser GUI -->
+        <groupId>com.michaelbaranov.microba</groupId>
+        <artifactId>microba</artifactId>
+        <version>0.4.4.3</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/lib/microba-0.4.4.3.jar</systemPath>
     </dependency>
     
   </dependencies>

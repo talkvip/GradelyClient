@@ -10,11 +10,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import org.gradely.client.FilePath;
 import org.gradely.client.SHA2Hashsum;
 import org.gradely.client.database.ConnectionException;
 import org.gradely.client.database.ConnectionPool;
 import org.gradely.client.logging.Logging;
+import org.gradely.client.network.Json;
+import org.gradely.client.network.Network;
+import org.gradely.client.network.ServerLocationsEnum;
+import org.gradely.client.network.UrlPath;
+import org.jooq.impl.Factory;
 
 /**
  * This class handles the file changes. Create Database entry get file from server, finish database entry.
@@ -108,16 +115,60 @@ public class FileChange {
      */
     public static void fileCreate(FilePath createdFile)
     {
-        //Collect metadata 
-            //Calculate chacksum
-        //String hashsum = Hashsum.computeHash(createdFile);
+        try
+        {
+            //Collect metadata 
+
+                //Calculate chacksum
+            String hashsum = SHA2Hashsum.computeHash(createdFile);
+            
+            //Set database
+            ConnectionPool pool = ConnectionPool.getInstance();
+            try
+            {
+                Factory create = pool.getJooqFactory();
+                create.select(Factory.fieldByName(""));
+                create.insertInto(Factory.tableByName(""))
+                        
+            
+            }
+            catch(ConnectionException e)
+            {
+                
+            }
+            finally
+            {
+                pool.returnJooqFactory(create);
+            }
+            //Move to cache
+
+            //Send metadata to server
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            
+            map.put("hashsum", hashsum);
+            map.put("changetype", "create");
+            map.put("filepath", createdFile.getLowerPart());
+            map.put("isDirectory", createdFile.isDirectory());
+            map.put("clientmodifiedtime", createdFile.getTimeModified());
+
+            Json j = new Json(map);
+            
+            UrlPath url = new UrlPath(ServerLocationsEnum.CLIENTFILECHANGE);
+            
+            //Parse server's response
+            Json response = new Json(Network.Post(url, j.getJsonString(), "text/json"));
+            
+            Map m = response.getMap();
+
+            //upload, (or don't upload) the file to the server.
+            //move file into cache.
+            //Modify local database.
         
-        
-        //Send metadata to server
-        //Parse server's response
-        //upload, (or don't upload) the file to the server.
-        //move file into cache.
-        //Modify local database.
+        }
+        catch(IOException|NoSuchAlgorithmException e)
+        {
+            Logging.error("Was not able to compute file create data. Server may or may not have changes.", e);
+        }
         
     }
     
